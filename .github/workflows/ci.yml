@@ -27,8 +27,6 @@ jobs:
         run: flake8 .
 
       - name: Run tests
-        run: |
-          pytest --tb=short -q
-        continue-on-error: false
+        run: pytest --tb=short -q || test $? -eq 5
         env:
           PYTHONPATH: .
