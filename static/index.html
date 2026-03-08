@@ -1584,7 +1584,7 @@ function openRestModal(type) {
     const conMod = getMod(c.stats?.CON || 10);
 
     document.getElementById('hitdie-modal-title').textContent =
-      type === 'night' ? '🌙 Night's Rest' : '⏱️ Short Rest';
+      type === 'night' ? "🌙 Night's Rest" : "⏱️ Short Rest";
     document.getElementById('hitdie-modal-desc').textContent =
       type === 'night'
         ? 'Spend hit point dice to recover HP. Roll die + CON modifier. Recharges short-rest features.'

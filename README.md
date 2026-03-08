@@ -5,14 +5,14 @@ Players connect via their phone browsers — no app install needed.
 
 ## Setup
 
-1. **Install Flask** (if you haven't already):
+1. **Install dependencies:**
    ```
-   pip install flask
+   pip install flask reportlab
    ```
 
 2. **Run the server:**
    ```
-   cd dnd_app
+   cd dnd-character-sheet
    python server.py
    ```
 

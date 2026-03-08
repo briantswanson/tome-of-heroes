@@ -104,7 +104,7 @@ def list_characters():
     return jsonify(chars)
 
 
-@app.route('/api/characters/<n>', methods=['GET'])
+@app.route('/api/characters/<name>', methods=['GET'])
 def get_character(name):
     p = char_path(name)
     if not os.path.exists(p):
@@ -113,7 +113,7 @@ def get_character(name):
         return jsonify(migrate_character(json.load(f)))
 
 
-@app.route('/api/characters/<n>', methods=['PUT'])
+@app.route('/api/characters/<name>', methods=['PUT'])
 def save_character(name):
     with open(char_path(name), 'w') as f:
         json.dump(request.json, f, indent=2)
@@ -181,7 +181,7 @@ def create_character():
     return jsonify({'ok': True, 'id': name})
 
 
-@app.route('/api/characters/<n>', methods=['DELETE'])
+@app.route('/api/characters/<name>', methods=['DELETE'])
 def delete_character(name):
     p = char_path(name)
     if os.path.exists(p):
@@ -189,7 +189,7 @@ def delete_character(name):
     return jsonify({'ok': True})
 
 
-@app.route('/api/characters/<n>/pdf', methods=['GET'])
+@app.route('/api/characters/<name>/pdf', methods=['GET'])
 def export_pdf(name):
     p = char_path(name)
     if not os.path.exists(p):
