@@ -1,0 +1,48 @@
+Tome of Heroes - Obsidian Feature Ideas
+========================================
+
+GRAPH VIEW INTEGRATIONS
+------------------------
+- Sync script (json_to_obsidian.py) to convert character JSON files into linked markdown notes
+- Visual party relationship map showing PC connections
+- Spell/gear cluster nodes showing which characters share items or abilities
+- Class feature web linking characters to their abilities
+
+CHARACTER MANAGEMENT
+---------------------
+- Character note template mirroring the 5 app tabs (Main, Stats, Spells, Gear, Notes)
+- Party roster table using Dataview plugin (sortable by AC, HP, class, etc.)
+- Death save history log per character
+- Level-up tracker with session-by-session progression notes
+
+SESSION TOOLS
+-------------
+- Session log template (date, party HP, loot gained, story beats)
+- Initiative tracker note updated each combat
+- Loot distribution log linking gear to characters
+- XP/milestone tracker per session
+
+DM REFERENCE
+------------
+- Mirror game_data.json content into searchable Obsidian notes
+- Spell reference notes linked to characters who have them prepared
+- Condition/status effect quick-reference notes
+- Encounter log with outcomes and difficulty ratings
+
+CAMPAIGN WIKI
+-------------
+- NPC notes linked to party characters they've interacted with
+- Location notes with embedded maps or descriptions
+- Faction relationship graph
+- Quest/story arc tracker with status tags (active, completed, failed)
+
+AUTOMATION & SYNC
+-----------------
+- Python script to auto-generate/update Obsidian notes from character JSON files
+- Flask endpoint to trigger note regeneration on character save
+- Git-synced vault so campaign notes are version controlled alongside the app
+
+PUBLISHING
+----------
+- Obsidian Publish for a read-only party wiki accessible to players between sessions
+- Shared spell/item compendium players can reference
