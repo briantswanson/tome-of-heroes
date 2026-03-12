@@ -4,7 +4,7 @@ fetch_data.py — Run this once to download D&D 5e 2024 data from 5etools GitHub
 and build game_data.json for the character sheet app.
 
 Usage:
-    python fetch_data.py
+    python -m app.fetch_data
 
 Requires: pip install requests
 """
@@ -22,7 +22,7 @@ except ImportError:
     sys.exit(1)
 
 BASE = "https://raw.githubusercontent.com/5etools-mirror-3/5etools-src/main/data"
-OUT = Path(__file__).parent / "game_data.json"
+OUT = Path(__file__).parent.parent / "data" / "game_data.json"
 
 HEADERS = {"User-Agent": "dnd-charsheet-app/1.0"}
 
@@ -399,8 +399,7 @@ def main():
         print(f"   ✗ Failed: {e}")
 
     # Write output
-    out_path = Path(__file__).parent / "game_data.json"
-    with open(out_path, "w") as f:
+    with open(OUT, "w") as f:
         json.dump(data, f, indent=2)
 
     total = sum(len(v) for v in data.values())
