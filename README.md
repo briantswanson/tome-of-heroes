@@ -27,6 +27,20 @@ Players connect via their phone browsers — no app install needed.
    ```
    Give players the **Network URL** — they open it in their phone browser.
 
+## Flake8 and Tests
+
+# Run Flake 8 on entire directory
+
+```
+python -m flake8 .
+```
+
+# Run test suite
+
+```
+python -m pytest
+```
+
 ## Features
 
 - **Main Tab** — Character info, HP tracking with +/− buttons, AC/Initiative/Speed, death saves, inspiration
