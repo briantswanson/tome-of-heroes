@@ -203,6 +203,11 @@ def export_pdf(name):
 
 if __name__ == '__main__':
     import socket
+    import sys
+
+    # Fix Unicode/emoji printing on Windows (cp1252 terminals)
+    if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     try:
         local_ip = socket.gethostbyname(socket.gethostname())
     except BaseException:
