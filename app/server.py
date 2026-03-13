@@ -2,11 +2,14 @@ from flask import Flask, request, jsonify, send_from_directory, send_file
 import json
 import os
 import glob
-from pdf_export import generate_pdf
+from .pdf_export import generate_pdf
 
-app = Flask(__name__, static_folder='static')
-DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-GAME_DATA_PATH = os.path.join(os.path.dirname(__file__), 'game_data.json')
+APP_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(APP_DIR)
+STATIC_DIR = os.path.join(ROOT_DIR, 'static')
+app = Flask(__name__, static_folder=STATIC_DIR, static_url_path='')
+DATA_DIR = os.path.join(ROOT_DIR, 'data', 'character_sheets')
+GAME_DATA_PATH = os.path.join(ROOT_DIR, 'data', 'game_data.json')
 os.makedirs(DATA_DIR, exist_ok=True)
 
 _game_data_cache = None
@@ -62,7 +65,7 @@ def migrate_character(char):
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory(STATIC_DIR, 'index.html')
 
 
 @app.route('/api/game-data', methods=['GET'])
