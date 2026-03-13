@@ -171,6 +171,7 @@ def create_character():
         "spells": [],
         "inventory": [],
         "features": [],
+        "attacks": [],
         "notes": "",
         "inspiration": False,
         "currency": {"pp": 0, "gp": 0, "ep": 0, "sp": 0, "cp": 0},

@@ -14,8 +14,9 @@
   --purple: #4a1a6a; --purple-b: #9b59b6;
 }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html { font-size:19px; }
 body {
-  background:var(--bg); color:var(--text); font-family:'Crimson Text',Georgia,serif; font-size:16px; min-height:100vh;
+  background:var(--bg); color:var(--text); font-family:'Crimson Text',Georgia,serif; font-size:1rem; min-height:100vh;
   background-image:radial-gradient(ellipse at 20% 0%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(139,26,26,.08) 0%,transparent 60%);
 }
 .screen{display:none} .screen.active{display:block}
@@ -42,7 +43,7 @@ body {
 .new-char-btn{width:100%;background:linear-gradient(135deg,var(--red) 0%,#5a0f0f 100%);border:1px solid #6a1a1a;color:var(--gold);font-family:'Cinzel',serif;font-size:.9rem;font-weight:600;letter-spacing:.1em;padding:14px;border-radius:4px;cursor:pointer;margin-top:8px;text-transform:uppercase;}
 /* ── TAB BAR ── */
 .tab-bar{display:flex;background:#0d0a04;border-top:1px solid var(--border-g);position:fixed;bottom:0;left:0;right:0;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
-.tab-btn{flex:1;background:none;border:none;color:var(--text-d);padding:10px 4px 8px;font-size:.5rem;font-family:'Cinzel',serif;letter-spacing:.05em;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s;text-transform:uppercase;}
+.tab-btn{flex:1;background:none;border:none;color:var(--text-d);padding:10px 4px 8px;font-size:.6rem;font-family:'Cinzel',serif;letter-spacing:.05em;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s;text-transform:uppercase;}
 .tab-btn .ti{font-size:1.2rem;line-height:1;}
 .tab-btn.active{color:var(--gold);}
 .tab-content{display:none} .tab-content.active{display:block}
@@ -252,6 +253,37 @@ body {
 /* ── MISC ── */
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
 input[type=number]{-moz-appearance:textfield;}
+/* ── DICE ROLLER ── */
+.die-btn-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.die-btn{flex:1;min-width:36px;max-width:58px;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--text-d);font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;padding:10px 4px;cursor:pointer;text-align:center;transition:all .15s;}
+.die-btn.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold);}
+.roll-mode-row{display:flex;gap:6px;margin-bottom:12px;}
+.roll-mode-btn{flex:1;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--text-d);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.06em;padding:9px 4px;cursor:pointer;text-transform:uppercase;transition:all .15s;text-align:center;}
+.roll-mode-btn.active-normal{background:rgba(52,152,219,.15);border-color:var(--blue-b);color:#a8c8f8;}
+.roll-mode-btn.active-skill{background:rgba(39,174,96,.15);border-color:var(--green-b);color:#88d8a0;}
+.roll-mode-btn.active-save{background:rgba(139,26,26,.2);border-color:var(--red-b);color:#e8a0a0;}
+.dice-tab-result{font-family:'Cinzel',serif;font-size:4.5rem;font-weight:900;color:var(--gold);text-align:center;min-height:80px;line-height:1;padding:10px 0;}
+.dice-tab-breakdown{text-align:center;font-size:.85rem;color:var(--text-d);margin-top:4px;min-height:18px;}
+.dice-roll-history{max-height:220px;overflow-y:auto;}
+.roll-hist-entry{display:flex;padding:8px 12px;border-bottom:1px solid var(--border);}
+.roll-hist-entry:last-child{border-bottom:none;}
+.roll-hist-label{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-d);}
+.roll-hist-total{font-family:'Cinzel',serif;font-weight:700;font-size:1.1rem;color:var(--gold);}
+.roll-hist-crit{color:#ffd700;}
+.roll-hist-fail{color:var(--red-b);}
+.dice-mod-badge{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-d);text-align:center;margin-top:6px;min-height:16px;}
+/* ── ROLL CHIPS ── */
+.roll-chips{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5px;}
+.roll-chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:12px;font-family:'Cinzel',serif;font-weight:600;white-space:nowrap;}
+.roll-chip-die{background:rgba(201,168,76,.12);border:1px solid var(--gold-d);color:var(--gold);}
+.roll-chip-ability{background:rgba(52,152,219,.1);border:1px solid var(--blue-b);color:#a8c8f8;}
+.roll-chip-prof{background:rgba(39,174,96,.1);border:1px solid var(--green-b);color:#88d8a0;}
+.roll-chip-exp{background:rgba(155,89,182,.12);border:1px solid var(--purple-b);color:#c8a8e8;}
+.roll-chip-bonus{background:rgba(201,168,76,.06);border:1px solid var(--border-g);color:var(--text-d);}
+.roll-chip-crit{background:rgba(255,215,0,.15);border:1px solid #ffd700;color:#ffd700;}
+.roll-chip-fumble{background:rgba(192,57,43,.15);border:1px solid var(--red-b);color:var(--red-b);}
+.roll-plus{color:var(--text-d);font-size:.75rem;line-height:1;}
+.roll-took{display:block;font-size:.72rem;color:var(--text-d);font-style:italic;text-align:center;margin-top:6px;}
 /* ── RULES TAB ── */
 .rules-section{margin-bottom:8px;}
 .rules-details{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;overflow:hidden;}
@@ -621,6 +653,74 @@ input[type=number]{-moz-appearance:textfield;}
       </div>
     </div><!-- /tab-main -->
 
+    <!-- ── TAB: DICE ROLLER ── -->
+    <div id="tab-dice" class="tab-content">
+
+      <!-- Die Selection -->
+      <div class="section-title">Choose Die</div>
+      <div class="die-btn-row" id="die-btn-row">
+        <button class="die-btn" onclick="selectDie(4)">d4</button>
+        <button class="die-btn" onclick="selectDie(6)">d6</button>
+        <button class="die-btn" onclick="selectDie(8)">d8</button>
+        <button class="die-btn" onclick="selectDie(10)">d10</button>
+        <button class="die-btn" onclick="selectDie(12)">d12</button>
+        <button class="die-btn active" id="die-btn-20" onclick="selectDie(20)">d20</button>
+        <button class="die-btn" onclick="selectDie(100)">d100</button>
+      </div>
+
+      <!-- Roll Mode -->
+      <div class="section-title">Roll Type</div>
+      <div class="roll-mode-row">
+        <button class="roll-mode-btn active-normal" id="mode-normal" onclick="switchDiceMode('normal')">Normal</button>
+        <button class="roll-mode-btn" id="mode-skill" onclick="switchDiceMode('skill')">Skill Check</button>
+        <button class="roll-mode-btn" id="mode-save" onclick="switchDiceMode('save')">Saving Throw</button>
+      </div>
+
+      <!-- Advantage -->
+      <div class="section-title">Advantage</div>
+      <div class="roll-mode-row" style="margin-bottom:12px;">
+        <button class="roll-mode-btn active-normal" id="adv-straight" onclick="setAdvantage('straight')">Normal</button>
+        <button class="roll-mode-btn" id="adv-advantage" onclick="setAdvantage('advantage')">Advantage</button>
+        <button class="roll-mode-btn" id="adv-disadvantage" onclick="setAdvantage('disadvantage')">Disadvantage</button>
+      </div>
+
+      <!-- Skill Selector -->
+      <div id="dice-skill-row" style="display:none;margin-bottom:12px;">
+        <select id="dice-skill-select" style="width:100%;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:8px 10px;outline:none;-webkit-appearance:none;" onchange="updateDiceModDisplay()"></select>
+        <div class="dice-mod-badge" id="dice-skill-mod"></div>
+      </div>
+
+      <!-- Save Selector -->
+      <div id="dice-save-row" style="display:none;margin-bottom:12px;">
+        <select id="dice-save-select" style="width:100%;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:8px 10px;outline:none;-webkit-appearance:none;" onchange="updateDiceModDisplay()"></select>
+        <div class="dice-mod-badge" id="dice-save-mod"></div>
+      </div>
+
+      <!-- Extra Bonus -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <label style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--gold-d);letter-spacing:.15em;text-transform:uppercase;white-space:nowrap;">Extra Bonus</label>
+        <input type="number" id="dice-extra-bonus" value="0" style="width:70px;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--ink);font-family:'Cinzel',serif;font-size:1rem;padding:6px 10px;outline:none;text-align:center;">
+      </div>
+
+      <!-- Roll Button -->
+      <button class="roll-btn" onclick="rollDiceTab()" style="margin-bottom:16px;">🎲 Roll</button>
+
+      <!-- Result Display -->
+      <div style="background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:14px;margin-bottom:12px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div class="dice-tab-result" id="dice-tab-result">—</div>
+        <div class="dice-tab-breakdown" id="dice-tab-breakdown"></div>
+      </div>
+
+      <!-- Roll History -->
+      <div class="section-title">Roll History</div>
+      <div style="background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;overflow:hidden;">
+        <div class="dice-roll-history" id="dice-roll-history">
+          <div style="color:var(--text-d);font-size:.8rem;font-style:italic;padding:12px;text-align:center;">No rolls yet.</div>
+        </div>
+      </div>
+
+    </div><!-- /tab-dice -->
+
     <!-- ── TAB: STATS ── -->
     <div id="tab-stats" class="tab-content">
       <div class="section-title">Ability Scores</div>
@@ -888,6 +988,7 @@ input[type=number]{-moz-appearance:textfield;}
   <!-- Tab Bar -->
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('main',this)"><span class="ti">🗡️</span>Main</button>
+    <button class="tab-btn" onclick="switchTab('dice',this)"><span class="ti">🎲</span>Dice</button>
     <button class="tab-btn" onclick="switchTab('stats',this)"><span class="ti">💪</span>Stats</button>
     <button class="tab-btn" onclick="switchTab('spells',this)"><span class="ti">✨</span>Spells</button>
     <button class="tab-btn" onclick="switchTab('inventory',this)"><span class="ti">🎒</span>Gear</button>
@@ -1695,6 +1796,7 @@ function switchTab(name,btn){
   document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if(btn) btn.classList.add('active');
+  if(name==='dice') populateDiceSelectors();
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -2129,6 +2231,202 @@ function resetStretch() {
   document.getElementById('monster-result-text').style.color = 'var(--text-d)';
   renderStretchGrid();
   renderStretchLog();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// DICE ROLLER
+// ══════════════════════════════════════════════════════════════════
+const SKILLS_DEF = [
+  {name:'Acrobatics',stat:'DEX'},{name:'Animal Handling',stat:'WIS'},
+  {name:'Arcana',stat:'INT'},{name:'Athletics',stat:'STR'},
+  {name:'Deception',stat:'CHA'},{name:'History',stat:'INT'},
+  {name:'Insight',stat:'WIS'},{name:'Intimidation',stat:'CHA'},
+  {name:'Investigation',stat:'INT'},{name:'Medicine',stat:'WIS'},
+  {name:'Nature',stat:'INT'},{name:'Perception',stat:'WIS'},
+  {name:'Performance',stat:'CHA'},{name:'Persuasion',stat:'CHA'},
+  {name:'Religion',stat:'INT'},{name:'Sleight of Hand',stat:'DEX'},
+  {name:'Stealth',stat:'DEX'},{name:'Survival',stat:'WIS'}
+];
+
+let diceState = {selectedDie: 20, mode: 'normal', advantage: 'straight', history: []};
+
+function selectDie(sides) {
+  diceState.selectedDie = sides;
+  document.querySelectorAll('.die-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === 'd' + sides);
+  });
+}
+
+function setAdvantage(mode) {
+  diceState.advantage = mode;
+  const styles = {straight: 'normal', advantage: 'skill', disadvantage: 'save'};
+  ['straight','advantage','disadvantage'].forEach(m => {
+    document.getElementById('adv-' + m).className = 'roll-mode-btn' + (m === mode ? ' active-' + styles[m] : '');
+  });
+}
+
+function switchDiceMode(mode) {
+  diceState.mode = mode;
+  ['normal','skill','save'].forEach(m => {
+    const btn = document.getElementById('mode-' + m);
+    btn.className = 'roll-mode-btn' + (m === mode ? ' active-' + m : '');
+  });
+  document.getElementById('dice-skill-row').style.display = mode === 'skill' ? 'block' : 'none';
+  document.getElementById('dice-save-row').style.display = mode === 'save' ? 'block' : 'none';
+  if (mode === 'skill' || mode === 'save') selectDie(20);
+  populateDiceSelectors();
+}
+
+function populateDiceSelectors() {
+  if (!currentChar) return;
+  const skillSel = document.getElementById('dice-skill-select');
+  skillSel.innerHTML = SKILLS_DEF.map(s => {
+    const p = currentChar.skills?.[s.name];
+    const star = p?.expert ? ' ★★ (Expertise)' : p?.prof ? ' ★ (Proficient)' : '';
+    return `<option value="${s.name}">${s.name} (${s.stat})${star}</option>`;
+  }).join('');
+  const saveSel = document.getElementById('dice-save-select');
+  saveSel.innerHTML = ABILITIES.map(ab => {
+    const prof = currentChar.saving_throws?.[ab];
+    return `<option value="${ab}">${ABILITY_NAMES[ab]} (${ab})${prof ? ' ★' : ''}</option>`;
+  }).join('');
+  updateDiceModDisplay();
+}
+
+function getSkillMod(skillName) {
+  if (!currentChar) return 0;
+  const def = SKILLS_DEF.find(s => s.name === skillName);
+  if (!def) return 0;
+  const score = currentChar.stats?.[def.stat] || 10;
+  const pb = getProfBonus(currentChar.level || 1);
+  const p = currentChar.skills?.[skillName];
+  return getMod(score) + (p?.expert ? pb * 2 : p?.prof ? pb : 0);
+}
+
+function getSaveMod(ab) {
+  if (!currentChar) return 0;
+  const score = currentChar.stats?.[ab] || 10;
+  const pb = getProfBonus(currentChar.level || 1);
+  return getMod(score) + (currentChar.saving_throws?.[ab] ? pb : 0);
+}
+
+function updateDiceModDisplay() {
+  if (diceState.mode === 'skill') {
+    const skill = document.getElementById('dice-skill-select').value;
+    const mod = getSkillMod(skill);
+    document.getElementById('dice-skill-mod').textContent = 'Total modifier: ' + fmtMod(mod);
+  } else if (diceState.mode === 'save') {
+    const ab = document.getElementById('dice-save-select').value;
+    const mod = getSaveMod(ab);
+    document.getElementById('dice-save-mod').textContent = 'Total modifier: ' + fmtMod(mod);
+  }
+}
+
+function buildBreakdownHTML(partsData, tookDropped, critFumble, chipSize) {
+  const fs = chipSize || '.8rem';
+  const chips = partsData.map((p, i) => {
+    const sep = i > 0 ? '<span class="roll-plus">+</span>' : '';
+    return `${sep}<span class="roll-chip roll-chip-${p.type}" style="font-size:${fs};">${p.text}</span>`;
+  }).join('');
+  const cf = critFumble ? `<span class="roll-chip roll-chip-${critFumble}" style="font-size:${fs};">${critFumble === 'crit' ? 'CRITICAL!' : 'FUMBLE!'}</span>` : '';
+  const td = tookDropped ? `<span class="roll-took">${tookDropped}</span>` : '';
+  return `<div class="roll-chips">${chips}${cf ? '<span class="roll-plus">·</span>' + cf : ''}</div>${td}`;
+}
+
+function rollDiceTab() {
+  const sides = diceState.selectedDie;
+  const mode = diceState.mode;
+  const adv = diceState.advantage;
+  const extra = parseInt(document.getElementById('dice-extra-bonus').value) || 0;
+  const roll1 = Math.floor(Math.random() * sides) + 1;
+  let roll = roll1;
+  let dieText, tookDropped = '';
+
+  if (adv !== 'straight') {
+    const roll2 = Math.floor(Math.random() * sides) + 1;
+    if (adv === 'advantage') {
+      roll = Math.max(roll1, roll2);
+      const dropped = Math.min(roll1, roll2);
+      dieText = `d${sides} ${roll}, ${dropped}↑`;
+      tookDropped = `took ${roll} · dropped ${dropped}`;
+    } else {
+      roll = Math.min(roll1, roll2);
+      const dropped = Math.max(roll1, roll2);
+      dieText = `d${sides} ${roll}, ${dropped}↓`;
+      tookDropped = `took ${roll} · dropped ${dropped}`;
+    }
+  } else {
+    dieText = `d${sides} ${roll}`;
+  }
+
+  let mod = 0, label = '', isCrit = false, isFail = false;
+  const partsData = [{text: dieText, type: 'die'}];
+
+  if (mode === 'skill') {
+    const skill = document.getElementById('dice-skill-select').value;
+    const def = SKILLS_DEF.find(s => s.name === skill);
+    const ab = def.stat;
+    const abilityMod = getMod(currentChar?.stats?.[ab] || 10);
+    const pb = getProfBonus(currentChar?.level || 1);
+    const p = currentChar?.skills?.[skill];
+    const profMod = p?.expert ? pb * 2 : p?.prof ? pb : 0;
+    mod = abilityMod + profMod;
+    label = skill;
+    if (abilityMod !== 0) partsData.push({text: `${ab} ${fmtMod(abilityMod)}`, type: 'ability'});
+    if (p?.expert) partsData.push({text: `Expertise ${fmtMod(pb * 2)}`, type: 'exp'});
+    else if (p?.prof) partsData.push({text: `Prof ${fmtMod(pb)}`, type: 'prof'});
+    isCrit = roll === 20; isFail = roll === 1;
+  } else if (mode === 'save') {
+    const ab = document.getElementById('dice-save-select').value;
+    const abilityMod = getMod(currentChar?.stats?.[ab] || 10);
+    const pb = getProfBonus(currentChar?.level || 1);
+    const proficient = currentChar?.saving_throws?.[ab];
+    mod = abilityMod + (proficient ? pb : 0);
+    label = ABILITY_NAMES[ab] + ' Save';
+    if (abilityMod !== 0) partsData.push({text: `${ab} ${fmtMod(abilityMod)}`, type: 'ability'});
+    if (proficient) partsData.push({text: `Prof ${fmtMod(pb)}`, type: 'prof'});
+    isCrit = roll === 20; isFail = roll === 1;
+  } else {
+    label = 'd' + sides;
+    isCrit = sides === 20 && roll === 20;
+    isFail = sides === 20 && roll === 1;
+  }
+
+  if (extra !== 0) partsData.push({text: `Bonus ${fmtMod(extra)}`, type: 'bonus'});
+
+  const total = roll + mod + extra;
+  const critFumble = isCrit ? 'crit' : isFail ? 'fumble' : '';
+
+  const resultEl = document.getElementById('dice-tab-result');
+  resultEl.textContent = total;
+  resultEl.style.color = isCrit ? '#ffd700' : isFail ? 'var(--red-b)' : 'var(--gold)';
+  resultEl.classList.remove('dice-rolling');
+  void resultEl.offsetWidth;
+  resultEl.classList.add('dice-rolling');
+  document.getElementById('dice-tab-breakdown').innerHTML = buildBreakdownHTML(partsData, tookDropped, critFumble, '.8rem');
+
+  diceState.history.unshift({total, label, partsData, tookDropped, isCrit, isFail});
+  if (diceState.history.length > 20) diceState.history.pop();
+  renderDiceHistory();
+}
+
+function renderDiceHistory() {
+  const el = document.getElementById('dice-roll-history');
+  if (!diceState.history.length) {
+    el.innerHTML = '<div style="color:var(--text-d);font-size:.8rem;font-style:italic;padding:12px;text-align:center;">No rolls yet.</div>';
+    return;
+  }
+  el.innerHTML = diceState.history.map(h => {
+    const totalCls = h.isCrit ? 'roll-hist-crit' : h.isFail ? 'roll-hist-fail' : '';
+    const chipsHTML = buildBreakdownHTML(h.partsData, h.tookDropped, '', '.65rem');
+    return `<div class="roll-hist-entry" style="flex-direction:column;align-items:flex-start;gap:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+        <span class="roll-hist-label">${h.label}</span>
+        <span class="roll-hist-total ${totalCls}">${h.total}</span>
+      </div>
+      <div style="width:100%;">${chipsHTML}</div>
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════════════════════════

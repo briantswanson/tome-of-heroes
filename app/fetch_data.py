@@ -26,7 +26,7 @@ OUT = Path(__file__).parent.parent / "data" / "game_data.json"
 
 HEADERS = {"User-Agent": "dnd-charsheet-app/1.0"}
 
-SRD_SOURCES = {"PHB", "PHB2024", "XGE", "TCE", "MPMM", "MM", "DMG", "SRD5", "basicRules"}
+SRD_SOURCES = {"PHB", "PHB2024", "XPHB", "XGE", "TCE", "MPMM", "MM", "DMG", "SRD5", "basicRules"}
 
 
 def fetch(url):
@@ -357,16 +357,16 @@ def main():
     # Classes + Subclasses
     print("\n⚔️  Fetching classes...")
     try:
-        raw = fetch(f"{BASE}/classes/index.json")
+        raw = fetch(f"{BASE}/class/index.json")
         all_class_data = {"class": [], "subclass": []}
         for cls_file in list(raw.values())[:20]:
             try:
-                cd = fetch(f"{BASE}/classes/{cls_file}")
+                cd = fetch(f"{BASE}/class/{cls_file}")
                 all_class_data["class"].extend(cd.get("class", []))
                 all_class_data["subclass"].extend(cd.get("subclass", []))
                 time.sleep(0.1)
-            except BaseException:
-                pass
+            except Exception as ce:
+                print(f"   ! Skipped {cls_file}: {ce}")
         data["classes"] = parse_classes(all_class_data)
         print(f"   ✓ {len(data['classes'])} classes loaded")
     except Exception as e:
@@ -398,9 +398,10 @@ def main():
     except Exception as e:
         print(f"   ✗ Failed: {e}")
 
-    # Write output
+    # Write output — server expects edition-keyed structure
+    output = {"2024": data, "2014": data}
     with open(OUT, "w") as f:
-        json.dump(data, f, indent=2)
+        json.dump(output, f, indent=2)
 
     total = sum(len(v) for v in data.values())
     print(f"\n✅ Done! Wrote {total} entries to game_data.json")
