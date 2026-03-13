@@ -6,14 +6,16 @@ Players connect via their phone browsers — no app install needed.
 ## Setup
 
 1. **Install dependencies:**
+
    ```
    pip install flask reportlab
    ```
 
 2. **Run the server:**
+
    ```
-   cd dnd-character-sheet
-   python server.py
+   cd tome-of-heroes
+   python main.py
    ```
 
 3. **Share with players:**
@@ -38,8 +40,8 @@ Players connect via their phone browsers — no app install needed.
 
 ## Data
 
-Character data is saved as JSON files in the `data/` folder.
-Each character gets their own file (e.g., `data/Thorin.json`).
+Character data is saved as JSON files in the `data/character_sheets/` folder.
+Each character gets their own file (e.g., `data/character_sheets/Thorin.json`).
 Changes auto-save every ~800ms after any edit.
 
 ## Tips
@@ -66,18 +68,20 @@ Want to suggest a change or fix something? Here's how to do it using Claude Code
 1. **Open Claude Code** in the project folder (`dnd-character-sheet/`).
 
 2. **Describe what you want to change** in plain English. For example:
-   - *"Add a field for character backstory on the Notes tab"*
-   - *"Fix the HP buttons so they don't go below 0"*
-   - *"Change the font color of the character name to gold"*
+   - _"Add a field for character backstory on the Notes tab"_
+   - _"Fix the HP buttons so they don't go below 0"_
+   - _"Change the font color of the character name to gold"_
 
    Claude Code will make the changes for you.
 
 3. **Create a branch for your change.** Tell Claude Code:
+
    > "Create a new branch called `feature/your-feature-name` and commit my changes."
 
    Claude Code will handle the git commands.
 
 4. **Push the branch and open a pull request.** Tell Claude Code:
+
    > "Push this branch and open a pull request on GitHub. Title it something descriptive and explain what changed."
 
    Claude Code will push the branch and create the PR for you.
