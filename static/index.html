@@ -656,18 +656,6 @@ input[type=number]{-moz-appearance:textfield;}
     <!-- ── TAB: DICE ROLLER ── -->
     <div id="tab-dice" class="tab-content">
 
-      <!-- Die Selection -->
-      <div class="section-title">Choose Die</div>
-      <div class="die-btn-row" id="die-btn-row">
-        <button class="die-btn" onclick="selectDie(4)">d4</button>
-        <button class="die-btn" onclick="selectDie(6)">d6</button>
-        <button class="die-btn" onclick="selectDie(8)">d8</button>
-        <button class="die-btn" onclick="selectDie(10)">d10</button>
-        <button class="die-btn" onclick="selectDie(12)">d12</button>
-        <button class="die-btn active" id="die-btn-20" onclick="selectDie(20)">d20</button>
-        <button class="die-btn" onclick="selectDie(100)">d100</button>
-      </div>
-
       <!-- Roll Mode -->
       <div class="section-title">Roll Type</div>
       <div class="roll-mode-row">
@@ -676,12 +664,32 @@ input[type=number]{-moz-appearance:textfield;}
         <button class="roll-mode-btn" id="mode-save" onclick="switchDiceMode('save')">Saving Throw</button>
       </div>
 
-      <!-- Advantage -->
-      <div class="section-title">Advantage</div>
-      <div class="roll-mode-row" style="margin-bottom:12px;">
-        <button class="roll-mode-btn active-normal" id="adv-straight" onclick="setAdvantage('straight')">Normal</button>
-        <button class="roll-mode-btn" id="adv-advantage" onclick="setAdvantage('advantage')">Advantage</button>
-        <button class="roll-mode-btn" id="adv-disadvantage" onclick="setAdvantage('disadvantage')">Disadvantage</button>
+      <!-- Dice Tray (Normal mode) -->
+      <div id="dice-tray-section">
+        <div class="section-title">Build Your Roll <span style="font-size:.6rem;color:var(--text-d);letter-spacing:.05em;text-transform:none;font-family:'Crimson Text',serif;">(click to add dice)</span></div>
+        <div class="die-btn-row">
+          <button class="die-btn" onclick="addDie(4)">+d4</button>
+          <button class="die-btn" onclick="addDie(6)">+d6</button>
+          <button class="die-btn" onclick="addDie(8)">+d8</button>
+          <button class="die-btn" onclick="addDie(10)">+d10</button>
+          <button class="die-btn" onclick="addDie(12)">+d12</button>
+          <button class="die-btn" onclick="addDie(20)">+d20</button>
+          <button class="die-btn" onclick="addDie(100)">+d%</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+          <input type="text" id="dice-formula" placeholder="e.g. 2d4 + 1d6 + 4" oninput="syncFormulaFromInput()" style="flex:1;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--ink);font-family:'Cinzel',serif;font-size:.9rem;padding:8px 10px;outline:none;">
+          <button onclick="clearDiceTray()" style="background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--text-d);font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;padding:8px 12px;cursor:pointer;white-space:nowrap;letter-spacing:.08em;text-transform:uppercase;">Clear</button>
+        </div>
+      </div>
+
+      <!-- Advantage (Skill / Save mode only) -->
+      <div id="dice-adv-section" style="display:none;">
+        <div class="section-title">Advantage</div>
+        <div class="roll-mode-row" style="margin-bottom:12px;">
+          <button class="roll-mode-btn active-normal" id="adv-straight" onclick="setAdvantage('straight')">Normal</button>
+          <button class="roll-mode-btn" id="adv-advantage" onclick="setAdvantage('advantage')">Advantage</button>
+          <button class="roll-mode-btn" id="adv-disadvantage" onclick="setAdvantage('disadvantage')">Disadvantage</button>
+        </div>
       </div>
 
       <!-- Skill Selector -->
@@ -2248,13 +2256,55 @@ const SKILLS_DEF = [
   {name:'Stealth',stat:'DEX'},{name:'Survival',stat:'WIS'}
 ];
 
-let diceState = {selectedDie: 20, mode: 'normal', advantage: 'straight', history: []};
+let diceState = {selectedDie: 20, mode: 'normal', advantage: 'straight', history: [], tray: [], flatBonus: 0};
 
 function selectDie(sides) {
   diceState.selectedDie = sides;
-  document.querySelectorAll('.die-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === 'd' + sides);
-  });
+}
+
+// ── Dice Tray ──────────────────────────────────────────────────────
+function addDie(sides) {
+  const existing = diceState.tray.find(e => e.sides === sides);
+  if (existing) { existing.count++; } else { diceState.tray.push({count: 1, sides}); }
+  syncFormulaFromTray();
+}
+
+function clearDiceTray() {
+  diceState.tray = [];
+  diceState.flatBonus = 0;
+  document.getElementById('dice-formula').value = '';
+}
+
+function syncFormulaFromTray() {
+  const parts = diceState.tray.map(e => `${e.count}d${e.sides}`);
+  if (diceState.flatBonus !== 0) parts.push(String(diceState.flatBonus));
+  document.getElementById('dice-formula').value = parts.join(' + ');
+}
+
+function syncFormulaFromInput() {
+  const str = document.getElementById('dice-formula').value;
+  const result = parseDiceFormula(str);
+  diceState.tray = result.tray;
+  diceState.flatBonus = result.flatBonus;
+}
+
+function parseDiceFormula(str) {
+  const tray = [];
+  let flatBonus = 0;
+  const tokens = str.replace(/\s+/g, '').split('+');
+  for (const token of tokens) {
+    const m = token.match(/^(\d+)d(\d+)$/i);
+    if (m) {
+      const count = parseInt(m[1]);
+      const sides = parseInt(m[2]);
+      const existing = tray.find(e => e.sides === sides);
+      if (existing) { existing.count += count; } else { tray.push({count, sides}); }
+    } else {
+      const num = parseInt(token);
+      if (!isNaN(num)) flatBonus += num;
+    }
+  }
+  return {tray, flatBonus};
 }
 
 function setAdvantage(mode) {
@@ -2271,6 +2321,8 @@ function switchDiceMode(mode) {
     const btn = document.getElementById('mode-' + m);
     btn.className = 'roll-mode-btn' + (m === mode ? ' active-' + m : '');
   });
+  document.getElementById('dice-tray-section').style.display = mode === 'normal' ? 'block' : 'none';
+  document.getElementById('dice-adv-section').style.display = mode !== 'normal' ? 'block' : 'none';
   document.getElementById('dice-skill-row').style.display = mode === 'skill' ? 'block' : 'none';
   document.getElementById('dice-save-row').style.display = mode === 'save' ? 'block' : 'none';
   if (mode === 'skill' || mode === 'save') selectDie(20);
@@ -2334,10 +2386,43 @@ function buildBreakdownHTML(partsData, tookDropped, critFumble, chipSize) {
 }
 
 function rollDiceTab() {
-  const sides = diceState.selectedDie;
   const mode = diceState.mode;
-  const adv = diceState.advantage;
   const extra = parseInt(document.getElementById('dice-extra-bonus').value) || 0;
+
+  // ── Normal mode: roll the tray ─────────────────────────────────
+  if (mode === 'normal') {
+    syncFormulaFromInput();
+    const tray = diceState.tray;
+    const flatBonus = diceState.flatBonus;
+    if (!tray.length && flatBonus === 0 && extra === 0) return;
+    let total = 0;
+    const partsData = [];
+    for (const {count, sides} of tray) {
+      const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+      const sum = rolls.reduce((a, b) => a + b, 0);
+      total += sum;
+      const rollStr = rolls.length > 1 ? `[${rolls.join(', ')}]` : String(rolls[0]);
+      partsData.push({text: `${count}d${sides} ${rollStr}`, type: 'die'});
+    }
+    if (flatBonus !== 0) { total += flatBonus; partsData.push({text: `+${flatBonus}`, type: 'bonus'}); }
+    if (extra !== 0) { total += extra; partsData.push({text: `Bonus ${fmtMod(extra)}`, type: 'bonus'}); }
+    const label = document.getElementById('dice-formula').value || 'Custom Roll';
+    const resultEl = document.getElementById('dice-tab-result');
+    resultEl.textContent = total;
+    resultEl.style.color = 'var(--gold)';
+    resultEl.classList.remove('dice-rolling');
+    void resultEl.offsetWidth;
+    resultEl.classList.add('dice-rolling');
+    document.getElementById('dice-tab-breakdown').innerHTML = buildBreakdownHTML(partsData, '', '', '.8rem');
+    diceState.history.unshift({total, label, partsData, tookDropped: '', isCrit: false, isFail: false});
+    if (diceState.history.length > 20) diceState.history.pop();
+    renderDiceHistory();
+    return;
+  }
+
+  // ── Skill / Save mode: single d20 with advantage ───────────────
+  const sides = diceState.selectedDie;
+  const adv = diceState.advantage;
   const roll1 = Math.floor(Math.random() * sides) + 1;
   let roll = roll1;
   let dieText, tookDropped = '';
