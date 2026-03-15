@@ -182,6 +182,9 @@ body {
 .attacks-table td input{background:transparent;border:none;color:var(--ink);font-family:'Crimson Text',serif;font-size:.9rem;width:100%;outline:none;padding:2px 0;}
 .attacks-table td input::placeholder{color:var(--text-d);opacity:.5;}
 .attacks-table .atk-del{background:none;border:none;color:var(--text-d);cursor:pointer;font-size:.9rem;padding:2px 4px;}
+.atk-roll-btn{background:none;border:1px solid var(--border-g);border-radius:3px;color:var(--gold-d);cursor:pointer;font-family:'Cinzel',serif;font-size:.55rem;font-weight:600;letter-spacing:.06em;padding:3px 5px;white-space:nowrap;display:block;width:100%;margin-bottom:2px;text-align:center;}
+.atk-roll-btn:last-child{margin-bottom:0;}
+.atk-roll-btn:active{background:rgba(201,168,76,.15);}
 /* ── SPELL STATS ── */
 .spell-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
 .spell-stat-box{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:8px;text-align:center;}
@@ -727,6 +730,14 @@ input[type=number]{-moz-appearance:textfield;}
         </div>
       </div>
 
+      <!-- Party Roll Log -->
+      <div class="section-title" style="margin-top:14px;">Party Roll Log <span id="party-log-status" style="font-family:'Crimson Text',serif;font-size:.7rem;color:var(--text-d);text-transform:none;letter-spacing:0;font-weight:400;margin-left:6px;">● connecting…</span></div>
+      <div style="background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;overflow:hidden;">
+        <div class="dice-roll-history" id="party-roll-log">
+          <div style="color:var(--text-d);font-size:.8rem;font-style:italic;padding:12px;text-align:center;">No party rolls yet.</div>
+        </div>
+      </div>
+
     </div><!-- /tab-dice -->
 
     <!-- ── TAB: STATS ── -->
@@ -780,7 +791,7 @@ input[type=number]{-moz-appearance:textfield;}
     <div id="tab-inventory" class="tab-content">
       <div class="section-title">Attacks &amp; Spellcasting</div>
       <table class="attacks-table">
-        <thead><tr><th>Name</th><th>ATK Bonus</th><th>Damage / Type</th><th></th></tr></thead>
+        <thead><tr><th>Name</th><th>ATK Bonus</th><th>Damage / Type</th><th>Roll</th><th></th></tr></thead>
         <tbody id="attacks-tbody"></tbody>
       </table>
       <button class="add-btn" onclick="addAttack()" style="margin-bottom:14px;">+ Add Attack</button>
@@ -1816,7 +1827,7 @@ function renderAttacks(){
   const tbody=document.getElementById('attacks-tbody');
   if(!tbody) return;
   if(!attacks.length){
-    tbody.innerHTML=`<tr><td colspan="4" style="color:var(--text-d);font-size:.8rem;padding:8px 6px;font-style:italic;">No attacks added yet.</td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="5" style="color:var(--text-d);font-size:.8rem;padding:8px 6px;font-style:italic;">No attacks added yet.</td></tr>`;
     return;
   }
   tbody.innerHTML=attacks.map((atk,i)=>`
@@ -1824,6 +1835,10 @@ function renderAttacks(){
       <td><input type="text" value="${atk.name||''}" placeholder="Longsword" oninput="updateAttack(${i},'name',this.value)"></td>
       <td><input type="text" value="${atk.atk_bonus||''}" placeholder="+5" oninput="updateAttack(${i},'atk_bonus',this.value)" style="width:60px;"></td>
       <td><input type="text" value="${atk.damage||''}" placeholder="1d8+3 slashing" oninput="updateAttack(${i},'damage',this.value)"></td>
+      <td style="width:44px;">
+        <button class="atk-roll-btn" onclick="rollAttack(${i})">🎲 ATK</button>
+        <button class="atk-roll-btn" onclick="rollDamage(${i})">💥 DMG</button>
+      </td>
       <td><button class="atk-del" onclick="removeAttack(${i})">✕</button></td>
     </tr>`).join('');
 }
@@ -1843,6 +1858,79 @@ function removeAttack(idx){
   currentChar.attacks.splice(idx,1);
   renderAttacks();
   scheduleSave();
+}
+
+function _pushDiceResult(label, partsData, total, isCrit, isFail) {
+  const resultEl = document.getElementById('dice-tab-result');
+  resultEl.textContent = total;
+  resultEl.style.color = isCrit ? '#ffd700' : isFail ? 'var(--red-b)' : 'var(--gold)';
+  resultEl.classList.remove('dice-rolling');
+  void resultEl.offsetWidth;
+  resultEl.classList.add('dice-rolling');
+  const critFumble = isCrit ? 'crit' : isFail ? 'fumble' : '';
+  document.getElementById('dice-tab-breakdown').innerHTML = buildBreakdownHTML(partsData, '', critFumble, '.8rem');
+  diceState.history.unshift({total, label, partsData, tookDropped: '', isCrit, isFail});
+  if (diceState.history.length > 20) diceState.history.pop();
+  renderDiceHistory();
+  // Broadcast to party roll log
+  fetch('/api/rolls', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      character: currentChar?.name || 'Unknown',
+      label, total, isCrit, isFail,
+      parts: partsData.map(p => p.text)
+    })
+  }).catch(() => {});
+}
+
+function showRollPopup(label, partsData, total, isCrit, isFail) {
+  document.getElementById('roll-popup-label').textContent = label;
+  const totalEl = document.getElementById('roll-popup-total');
+  totalEl.textContent = total;
+  totalEl.style.color = isCrit ? '#ffd700' : isFail ? 'var(--red-b)' : 'var(--gold)';
+  totalEl.classList.remove('dice-rolling');
+  void totalEl.offsetWidth;
+  totalEl.classList.add('dice-rolling');
+  const critFumble = isCrit ? 'crit' : isFail ? 'fumble' : '';
+  document.getElementById('roll-popup-breakdown').innerHTML = buildBreakdownHTML(partsData, '', critFumble, '.85rem');
+  document.getElementById('modal-roll-result').classList.add('open');
+}
+
+function rollAttack(idx) {
+  const atk = currentChar.attacks?.[idx];
+  if (!atk) return;
+  const bonus = parseInt(atk.atk_bonus) || 0;
+  const roll = Math.floor(Math.random() * 20) + 1;
+  const total = roll + bonus;
+  const isCrit = roll === 20, isFail = roll === 1;
+  const partsData = [{text: `d20 ${roll}`, type: 'die'}];
+  if (bonus !== 0) partsData.push({text: `ATK ${fmtMod(bonus)}`, type: 'ability'});
+  const label = (atk.name || 'Attack') + ' — To Hit';
+  _pushDiceResult(label, partsData, total, isCrit, isFail);
+  showRollPopup(label, partsData, total, isCrit, isFail);
+}
+
+function rollDamage(idx) {
+  const atk = currentChar.attacks?.[idx];
+  if (!atk || !atk.damage) return;
+  // Strip trailing damage type words e.g. "1d8+3 slashing" -> "1d8+3"
+  const dmgStr = atk.damage.replace(/[a-zA-Z\s]+$/, '').trim();
+  const {tray, flatBonus} = parseDiceFormula(dmgStr);
+  if (!tray.length && flatBonus === 0) return;
+  let total = 0;
+  const partsData = [];
+  for (const {count, sides} of tray) {
+    const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+    const sum = rolls.reduce((a, b) => a + b, 0);
+    total += sum;
+    const rollStr = rolls.length > 1 ? `[${rolls.join(', ')}]` : String(rolls[0]);
+    partsData.push({text: `${count}d${sides} ${rollStr}`, type: 'die'});
+  }
+  if (flatBonus !== 0) { total += flatBonus; partsData.push({text: `+${flatBonus}`, type: 'bonus'}); }
+  const label = (atk.name || 'Attack') + ' — Damage';
+  _pushDiceResult(label, partsData, total, false, false);
+  showRollPopup(label, partsData, total, false, false);
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -2515,6 +2603,48 @@ function renderDiceHistory() {
 }
 
 // ══════════════════════════════════════════════════════════════════
+// PARTY ROLL LOG (SSE)
+// ══════════════════════════════════════════════════════════════════
+const partyLog = [];
+
+function connectPartyRollLog() {
+  const statusEl = document.getElementById('party-log-status');
+  const es = new EventSource('/api/rolls/stream');
+  es.onopen = () => { if (statusEl) statusEl.textContent = '● live'; statusEl.style.color = 'var(--green-b)'; };
+  es.onerror = () => { if (statusEl) { statusEl.textContent = '● disconnected'; statusEl.style.color = 'var(--red-b)'; } };
+  es.onmessage = (e) => {
+    try {
+      const roll = JSON.parse(e.data);
+      partyLog.unshift(roll);
+      if (partyLog.length > 50) partyLog.pop();
+      renderPartyLog();
+    } catch (_) {}
+  };
+}
+
+function renderPartyLog() {
+  const el = document.getElementById('party-roll-log');
+  if (!el) return;
+  if (!partyLog.length) {
+    el.innerHTML = '<div style="color:var(--text-d);font-size:.8rem;font-style:italic;padding:12px;text-align:center;">No party rolls yet.</div>';
+    return;
+  }
+  el.innerHTML = partyLog.map(r => {
+    const totalCls = r.isCrit ? 'roll-hist-crit' : r.isFail ? 'roll-hist-fail' : '';
+    const parts = (r.parts || []).join(' + ');
+    return `<div class="roll-hist-entry" style="flex-direction:column;align-items:flex-start;gap:2px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+        <span class="roll-hist-label" style="color:var(--text-d);">${r.character} · ${r.label}</span>
+        <span class="roll-hist-total ${totalCls}">${r.total}</span>
+      </div>
+      <div style="font-size:.7rem;color:var(--text-d);font-style:italic;">${parts}</div>
+    </div>`;
+  }).join('');
+}
+
+connectPartyRollLog();
+
+// ══════════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════════
 loadCharList();
@@ -2652,6 +2782,15 @@ loadCharList();
     <div id="sanctuary-warning" style="display:none;color:var(--red-b);font-size:.8rem;margin-bottom:8px;text-align:center;">⚠️ Not enough gold!</div>
     <button class="confirm-btn" onclick="confirmSanctuary()" id="sanctuary-confirm-btn">✓ Make Offering (−100 gp)</button>
     <button class="cancel-btn" onclick="closeModal('modal-sanctuary')">Cancel</button>
+  </div>
+</div>
+
+<!-- Roll Result Popup -->
+<div class="modal-overlay" id="modal-roll-result" style="align-items:center;" onclick="closeModal('modal-roll-result')">
+  <div onclick="event.stopPropagation()" style="background:var(--bg2);border:1px solid var(--border-g);border-top:2px solid var(--gold-d);border-radius:8px;width:90%;max-width:340px;padding:24px 20px 20px;text-align:center;">
+    <div id="roll-popup-label" style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-d);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;"></div>
+    <div id="roll-popup-total" class="dice-tab-result" style="font-size:5rem;line-height:1;margin-bottom:8px;"></div>
+    <div id="roll-popup-breakdown" class="dice-tab-breakdown" style="margin-bottom:4px;"></div>
   </div>
 </div>
 
