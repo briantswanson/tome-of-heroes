@@ -1,7 +1,10 @@
-from flask import Flask, request, jsonify, send_from_directory, send_file
+from flask import Flask, request, jsonify, send_from_directory, send_file, Response
 import json
 import os
 import glob
+import queue
+import threading
+import time
 from .pdf_export import generate_pdf
 
 APP_DIR = os.path.dirname(__file__)
@@ -14,6 +17,8 @@ HOUSE_RULES_PATH = os.path.join(ROOT_DIR, 'data', 'house_rules.json')
 os.makedirs(DATA_DIR, exist_ok=True)
 
 _game_data_cache = None
+_roll_subscribers = []
+_roll_lock = threading.Lock()
 
 
 def load_game_data():
@@ -259,6 +264,43 @@ def export_pdf(name):
     buf = generate_pdf(char)
     filename = f"{char.get('name', 'character').replace(' ', '_')}_sheet.pdf"
     return send_file(buf, mimetype='application/pdf', as_attachment=True, download_name=filename)
+
+
+@app.route('/api/rolls', methods=['POST'])
+def post_roll():
+    roll = request.json
+    roll['timestamp'] = time.time()
+    with _roll_lock:
+        dead = [q for q in _roll_subscribers if q.full()]
+        for q in dead:
+            _roll_subscribers.remove(q)
+        for q in _roll_subscribers:
+            try:
+                q.put_nowait(roll)
+            except queue.Full:
+                pass
+    return jsonify({'ok': True})
+
+
+@app.route('/api/rolls/stream')
+def roll_stream():
+    def generate():
+        q = queue.Queue(maxsize=50)
+        with _roll_lock:
+            _roll_subscribers.append(q)
+        try:
+            while True:
+                try:
+                    roll = q.get(timeout=30)
+                    yield f"data: {json.dumps(roll)}\n\n"
+                except queue.Empty:
+                    yield ": keepalive\n\n"
+        finally:
+            with _roll_lock:
+                if q in _roll_subscribers:
+                    _roll_subscribers.remove(q)
+    return Response(generate(), mimetype='text/event-stream',
+                    headers={'Cache-Control': 'no-cache', 'X-Accel-Buffering': 'no'})
 
 
 if __name__ == '__main__':

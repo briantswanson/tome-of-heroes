@@ -48,15 +48,32 @@ python -m pytest
 - **Main Tab** — Character info, HP tracking with +/− buttons, AC/Initiative/Speed, death saves, inspiration
 - **Stats Tab** — All 6 ability scores with auto-calculated modifiers, saving throws, all 18 skills (with proficiency & expertise toggles)
 - **Spells Tab** — Spell slot tracking (tap pips to use/recover), full spellbook with prepared toggle
-- **Gear Tab** — Inventory with quantity tracking, currency (PP/GP/EP/SP/CP)
+- **Gear Tab** — Inventory with quantity tracking, currency (PP/GP/EP/SP/CP); Attacks & Spellcasting table with `🎲 ATK` and `💥 DMG` roll buttons per attack — tapping a button rolls instantly and shows a popup with the result (crit/fumble highlighted), also logging to the Dice tab history and Party Roll Log
 - **Notes Tab** — Class features/traits, free-text notes
 - **Dice Tab** — Dice roller with three modes:
   - *Normal* — Build a roll by clicking dice buttons (e.g. `+d6`, `+d4`) or type a formula directly (e.g. `2d4 + 1d6 + 4`). Supports any mix of dice types and flat bonuses.
   - *Skill Check* — Rolls d20 with your character's skill modifier pre-applied; supports Advantage/Disadvantage
   - *Saving Throw* — Rolls d20 with your character's save modifier pre-applied; supports Advantage/Disadvantage
+  - *Party Roll Log* — Live feed of every roll made by all players connected to the server (powered by Server-Sent Events). Shows character name, roll label, total, and breakdown in real time.
+- **Rules Tab** — New player cheat sheet split into two sections:
+  - *Out of Combat* — All 18 skills with descriptions, ability score explanations, movement mechanics (walk, run, jump, climb, swim), and status conditions
+  - *Combat* — Action economy (Action, Bonus Action, Reaction, Free Action), common actions (Attack, Dash, Dodge, Help, Hide, Ready, Use Object), and combat status conditions
 - **Rules Tab** — New player cheat sheet with two subtabs:
   - *Reference* — All 18 skills with descriptions, ability score explanations, movement mechanics (walk, run, jump, climb, swim), action economy, common combat actions, and status conditions
   - *Homebrew Rules* — Campaign-specific rules added by the DM. Rules persist on the server and are shared across all characters. Supports adding, editing, and deleting entries, organised by category (General, Combat, Magic, Skills, Exploration, Character Creation, Other). Data is stored in `data/house_rules.json`.
+
+## API Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/characters` | List all characters |
+| POST | `/api/characters` | Create a new character |
+| GET | `/api/characters/<name>` | Get a character |
+| PUT | `/api/characters/<name>` | Save a character |
+| DELETE | `/api/characters/<name>` | Delete a character |
+| GET | `/api/characters/<name>/pdf` | Export character sheet as PDF |
+| POST | `/api/rolls` | Broadcast a roll event to all connected clients |
+| GET | `/api/rolls/stream` | SSE stream — subscribe to live roll events from all players |
 
 ## Data
 
