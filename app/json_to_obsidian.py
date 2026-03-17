@@ -119,8 +119,8 @@ class CharacterNote:
         lines = [
             '## Combat',
             '',
-            f"| HP | AC | Speed | Initiative | Prof Bonus |",
-            f"|----|----|-------|------------|------------|",
+            "| HP | AC | Speed | Initiative | Prof Bonus |",
+            "|----|----|-------|------------|------------|",
             f"| {hp_str} | {c.get('ac', 10)} "
             f"| {c.get('speed', 30)} ft | {fmt_mod(init)} | {fmt_mod(self.pb)} |",
             '',
