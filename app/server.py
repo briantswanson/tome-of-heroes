@@ -10,6 +10,7 @@ STATIC_DIR = os.path.join(ROOT_DIR, 'static')
 app = Flask(__name__, static_folder=STATIC_DIR, static_url_path='')
 DATA_DIR = os.path.join(ROOT_DIR, 'data', 'character_sheets')
 GAME_DATA_PATH = os.path.join(ROOT_DIR, 'data', 'game_data.json')
+HOUSE_RULES_PATH = os.path.join(ROOT_DIR, 'data', 'house_rules.json')
 os.makedirs(DATA_DIR, exist_ok=True)
 
 _game_data_cache = None
@@ -190,6 +191,61 @@ def delete_character(name):
     p = char_path(name)
     if os.path.exists(p):
         os.remove(p)
+    return jsonify({'ok': True})
+
+
+def load_house_rules():
+    if os.path.exists(HOUSE_RULES_PATH):
+        with open(HOUSE_RULES_PATH) as f:
+            return json.load(f)
+    return []
+
+
+def save_house_rules(rules):
+    with open(HOUSE_RULES_PATH, 'w') as f:
+        json.dump(rules, f, indent=2)
+
+
+@app.route('/api/house-rules', methods=['GET'])
+def get_house_rules():
+    return jsonify(load_house_rules())
+
+
+@app.route('/api/house-rules', methods=['POST'])
+def add_house_rule():
+    data = request.json
+    rules = load_house_rules()
+    import time
+    rule = {
+        'id': str(int(time.time() * 1000)),
+        'title': data.get('title', '').strip(),
+        'category': data.get('category', 'General'),
+        'description': data.get('description', '').strip(),
+    }
+    rules.append(rule)
+    save_house_rules(rules)
+    return jsonify({'ok': True, 'rule': rule})
+
+
+@app.route('/api/house-rules/<rule_id>', methods=['PUT'])
+def update_house_rule(rule_id):
+    data = request.json
+    rules = load_house_rules()
+    for r in rules:
+        if r.get('id') == rule_id:
+            r['title'] = data.get('title', r['title']).strip()
+            r['category'] = data.get('category', r['category'])
+            r['description'] = data.get('description', r['description']).strip()
+            break
+    save_house_rules(rules)
+    return jsonify({'ok': True})
+
+
+@app.route('/api/house-rules/<rule_id>', methods=['DELETE'])
+def delete_house_rule(rule_id):
+    rules = load_house_rules()
+    rules = [r for r in rules if r.get('id') != rule_id]
+    save_house_rules(rules)
     return jsonify({'ok': True})
 
 

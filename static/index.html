@@ -302,6 +302,33 @@ input[type=number]{-moz-appearance:textfield;}
 .rules-pill.blue{background:rgba(26,42,74,.3);border-color:var(--blue-b);color:#a8c8e8;}
 .rules-pill.green{background:rgba(26,74,42,.3);border-color:var(--green-b);color:#88d8a0;}
 .rules-pill.purple{background:rgba(74,26,106,.3);border-color:var(--purple-b);color:#c8a8e8;}
+/* ── HOUSE RULES ── */
+.house-rule-entry{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:10px 12px;margin-bottom:6px;}
+.house-rule-title{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.house-rule-desc{font-size:.85rem;color:var(--text-d);line-height:1.5;white-space:pre-wrap;}
+.house-rule-del{background:none;border:none;color:var(--red-b);font-size:.9rem;cursor:pointer;padding:0 4px;opacity:.6;flex-shrink:0;}
+.house-rule-del:hover{opacity:1;}
+.house-rule-edit{background:none;border:none;color:var(--gold-d);font-size:.9rem;cursor:pointer;padding:0 4px;opacity:.6;flex-shrink:0;}
+.house-rule-edit:hover{opacity:1;}
+.house-rule-confirm-del{background:none;border:none;color:var(--red-b);font-size:.75rem;font-family:'Cinzel',serif;cursor:pointer;padding:2px 6px;border:1px solid var(--red-b);border-radius:3px;flex-shrink:0;}
+.house-rule-cancel-del{background:none;border:none;color:var(--text-d);font-size:.75rem;font-family:'Cinzel',serif;cursor:pointer;padding:2px 6px;border:1px solid var(--border-g);border-radius:3px;flex-shrink:0;}
+.house-rule-edit-form{padding:4px 0;}
+.house-rule-edit-form textarea{width:100%;background:transparent;border:1px solid var(--border-g);border-radius:3px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:6px 8px;outline:none;resize:vertical;min-height:80px;margin-top:6px;}
+.house-rule-edit-form textarea:focus{border-color:var(--gold);}
+.house-rule-edit-form select{background:var(--bg2);}
+.house-rule-edit-form select option{background:var(--bg2);color:var(--ink);}
+.house-rule-edit-btns{display:flex;gap:8px;margin-top:8px;}
+.add-rule-form{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:14px;margin-bottom:4px;}
+.add-rule-form .field-group{margin-bottom:10px;}
+.add-rule-form textarea{width:100%;background:transparent;border:1px solid var(--border-g);border-radius:3px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:6px 8px;outline:none;resize:vertical;min-height:80px;}
+.add-rule-form textarea:focus{border-color:var(--gold);}
+.add-rule-form select{background:var(--bg2);}
+.add-rule-form select option{background:var(--bg2);color:var(--ink);}
+/* ── SUBTABS ── */
+.subtab-bar{display:flex;border-bottom:1px solid var(--border-g);margin-bottom:16px;}
+.subtab-btn{flex:1;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-d);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:10px 4px;cursor:pointer;transition:color .15s,border-color .15s;}
+.subtab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.subtab-panel{display:none}.subtab-panel.active{display:block}
 .rules-ability-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:4px;}
 .rules-ability-card{background:var(--bg);border:1px solid var(--border-g);border-radius:4px;padding:10px;}
 .rules-ability-card .rac-name{font-family:'Cinzel',serif;font-size:.75rem;font-weight:700;color:var(--gold);letter-spacing:.08em;margin-bottom:3px;}
@@ -656,18 +683,6 @@ input[type=number]{-moz-appearance:textfield;}
     <!-- ── TAB: DICE ROLLER ── -->
     <div id="tab-dice" class="tab-content">
 
-      <!-- Die Selection -->
-      <div class="section-title">Choose Die</div>
-      <div class="die-btn-row" id="die-btn-row">
-        <button class="die-btn" onclick="selectDie(4)">d4</button>
-        <button class="die-btn" onclick="selectDie(6)">d6</button>
-        <button class="die-btn" onclick="selectDie(8)">d8</button>
-        <button class="die-btn" onclick="selectDie(10)">d10</button>
-        <button class="die-btn" onclick="selectDie(12)">d12</button>
-        <button class="die-btn active" id="die-btn-20" onclick="selectDie(20)">d20</button>
-        <button class="die-btn" onclick="selectDie(100)">d100</button>
-      </div>
-
       <!-- Roll Mode -->
       <div class="section-title">Roll Type</div>
       <div class="roll-mode-row">
@@ -676,12 +691,32 @@ input[type=number]{-moz-appearance:textfield;}
         <button class="roll-mode-btn" id="mode-save" onclick="switchDiceMode('save')">Saving Throw</button>
       </div>
 
-      <!-- Advantage -->
-      <div class="section-title">Advantage</div>
-      <div class="roll-mode-row" style="margin-bottom:12px;">
-        <button class="roll-mode-btn active-normal" id="adv-straight" onclick="setAdvantage('straight')">Normal</button>
-        <button class="roll-mode-btn" id="adv-advantage" onclick="setAdvantage('advantage')">Advantage</button>
-        <button class="roll-mode-btn" id="adv-disadvantage" onclick="setAdvantage('disadvantage')">Disadvantage</button>
+      <!-- Dice Tray (Normal mode) -->
+      <div id="dice-tray-section">
+        <div class="section-title">Build Your Roll <span style="font-size:.6rem;color:var(--text-d);letter-spacing:.05em;text-transform:none;font-family:'Crimson Text',serif;">(click to add dice)</span></div>
+        <div class="die-btn-row">
+          <button class="die-btn" onclick="addDie(4)">+d4</button>
+          <button class="die-btn" onclick="addDie(6)">+d6</button>
+          <button class="die-btn" onclick="addDie(8)">+d8</button>
+          <button class="die-btn" onclick="addDie(10)">+d10</button>
+          <button class="die-btn" onclick="addDie(12)">+d12</button>
+          <button class="die-btn" onclick="addDie(20)">+d20</button>
+          <button class="die-btn" onclick="addDie(100)">+d%</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+          <input type="text" id="dice-formula" placeholder="e.g. 2d4 + 1d6 + 4" oninput="syncFormulaFromInput()" style="flex:1;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--ink);font-family:'Cinzel',serif;font-size:.9rem;padding:8px 10px;outline:none;">
+          <button onclick="clearDiceTray()" style="background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--text-d);font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;padding:8px 12px;cursor:pointer;white-space:nowrap;letter-spacing:.08em;text-transform:uppercase;">Clear</button>
+        </div>
+      </div>
+
+      <!-- Advantage (Skill / Save mode only) -->
+      <div id="dice-adv-section" style="display:none;">
+        <div class="section-title">Advantage</div>
+        <div class="roll-mode-row" style="margin-bottom:12px;">
+          <button class="roll-mode-btn active-normal" id="adv-straight" onclick="setAdvantage('straight')">Normal</button>
+          <button class="roll-mode-btn" id="adv-advantage" onclick="setAdvantage('advantage')">Advantage</button>
+          <button class="roll-mode-btn" id="adv-disadvantage" onclick="setAdvantage('disadvantage')">Disadvantage</button>
+        </div>
       </div>
 
       <!-- Skill Selector -->
@@ -821,6 +856,13 @@ input[type=number]{-moz-appearance:textfield;}
 
     <!-- ── TAB: RULES ── -->
     <div id="tab-rules" class="tab-content">
+
+      <div class="subtab-bar">
+        <button class="subtab-btn active" id="subtab-btn-reference" onclick="switchSubtab('reference',this)">Reference</button>
+        <button class="subtab-btn" id="subtab-btn-homebrew" onclick="switchSubtab('homebrew',this)">Homebrew Rules</button>
+      </div>
+
+      <div id="subtab-reference" class="subtab-panel active">
 
       <div class="section-title">Out of Combat</div>
 
@@ -980,6 +1022,42 @@ input[type=number]{-moz-appearance:textfield;}
           </div>
         </details>
       </div>
+
+      </div><!-- /subtab-reference -->
+
+      <div id="subtab-homebrew" class="subtab-panel">
+
+        <div class="section-title">Add New Rule</div>
+        <div class="add-rule-form">
+          <div class="field-group">
+            <label>Title</label>
+            <input type="text" id="new-rule-title" placeholder="e.g. Flanking grants advantage">
+          </div>
+          <div class="field-group">
+            <label>Category</label>
+            <select id="new-rule-category">
+              <option value="General">General</option>
+              <option value="Combat">Combat</option>
+              <option value="Magic">Magic</option>
+              <option value="Skills">Skills</option>
+              <option value="Exploration">Exploration</option>
+              <option value="Character Creation">Character Creation</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Description</label>
+            <textarea id="new-rule-desc" placeholder="Describe the homebrew rule…"></textarea>
+          </div>
+          <button class="confirm-btn" onclick="addHouseRule()" style="margin-top:4px;">+ Add Rule</button>
+        </div>
+
+        <div class="section-title">Homebrew Rules</div>
+        <div id="house-rules-list">
+          <div style="color:var(--text-d);font-size:.85rem;font-style:italic;text-align:center;padding:20px 0;">No homebrew rules yet.</div>
+        </div>
+
+      </div><!-- /subtab-homebrew -->
 
     </div><!-- /tab-rules -->
 
@@ -1799,6 +1877,14 @@ function switchTab(name,btn){
   if(name==='dice') populateDiceSelectors();
 }
 
+function switchSubtab(name, btn) {
+  document.querySelectorAll('.subtab-panel').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.subtab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('subtab-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name === 'homebrew') loadHouseRules();
+}
+
 // ══════════════════════════════════════════════════════════════════
 // ATTACKS & SPELLCASTING TABLE
 // ══════════════════════════════════════════════════════════════════
@@ -2248,13 +2334,55 @@ const SKILLS_DEF = [
   {name:'Stealth',stat:'DEX'},{name:'Survival',stat:'WIS'}
 ];
 
-let diceState = {selectedDie: 20, mode: 'normal', advantage: 'straight', history: []};
+let diceState = {selectedDie: 20, mode: 'normal', advantage: 'straight', history: [], tray: [], flatBonus: 0};
 
 function selectDie(sides) {
   diceState.selectedDie = sides;
-  document.querySelectorAll('.die-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === 'd' + sides);
-  });
+}
+
+// ── Dice Tray ──────────────────────────────────────────────────────
+function addDie(sides) {
+  const existing = diceState.tray.find(e => e.sides === sides);
+  if (existing) { existing.count++; } else { diceState.tray.push({count: 1, sides}); }
+  syncFormulaFromTray();
+}
+
+function clearDiceTray() {
+  diceState.tray = [];
+  diceState.flatBonus = 0;
+  document.getElementById('dice-formula').value = '';
+}
+
+function syncFormulaFromTray() {
+  const parts = diceState.tray.map(e => `${e.count}d${e.sides}`);
+  if (diceState.flatBonus !== 0) parts.push(String(diceState.flatBonus));
+  document.getElementById('dice-formula').value = parts.join(' + ');
+}
+
+function syncFormulaFromInput() {
+  const str = document.getElementById('dice-formula').value;
+  const result = parseDiceFormula(str);
+  diceState.tray = result.tray;
+  diceState.flatBonus = result.flatBonus;
+}
+
+function parseDiceFormula(str) {
+  const tray = [];
+  let flatBonus = 0;
+  const tokens = str.replace(/\s+/g, '').split('+');
+  for (const token of tokens) {
+    const m = token.match(/^(\d+)d(\d+)$/i);
+    if (m) {
+      const count = parseInt(m[1]);
+      const sides = parseInt(m[2]);
+      const existing = tray.find(e => e.sides === sides);
+      if (existing) { existing.count += count; } else { tray.push({count, sides}); }
+    } else {
+      const num = parseInt(token);
+      if (!isNaN(num)) flatBonus += num;
+    }
+  }
+  return {tray, flatBonus};
 }
 
 function setAdvantage(mode) {
@@ -2271,6 +2399,8 @@ function switchDiceMode(mode) {
     const btn = document.getElementById('mode-' + m);
     btn.className = 'roll-mode-btn' + (m === mode ? ' active-' + m : '');
   });
+  document.getElementById('dice-tray-section').style.display = mode === 'normal' ? 'block' : 'none';
+  document.getElementById('dice-adv-section').style.display = mode !== 'normal' ? 'block' : 'none';
   document.getElementById('dice-skill-row').style.display = mode === 'skill' ? 'block' : 'none';
   document.getElementById('dice-save-row').style.display = mode === 'save' ? 'block' : 'none';
   if (mode === 'skill' || mode === 'save') selectDie(20);
@@ -2334,10 +2464,43 @@ function buildBreakdownHTML(partsData, tookDropped, critFumble, chipSize) {
 }
 
 function rollDiceTab() {
-  const sides = diceState.selectedDie;
   const mode = diceState.mode;
-  const adv = diceState.advantage;
   const extra = parseInt(document.getElementById('dice-extra-bonus').value) || 0;
+
+  // ── Normal mode: roll the tray ─────────────────────────────────
+  if (mode === 'normal') {
+    syncFormulaFromInput();
+    const tray = diceState.tray;
+    const flatBonus = diceState.flatBonus;
+    if (!tray.length && flatBonus === 0 && extra === 0) return;
+    let total = 0;
+    const partsData = [];
+    for (const {count, sides} of tray) {
+      const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+      const sum = rolls.reduce((a, b) => a + b, 0);
+      total += sum;
+      const rollStr = rolls.length > 1 ? `[${rolls.join(', ')}]` : String(rolls[0]);
+      partsData.push({text: `${count}d${sides} ${rollStr}`, type: 'die'});
+    }
+    if (flatBonus !== 0) { total += flatBonus; partsData.push({text: `+${flatBonus}`, type: 'bonus'}); }
+    if (extra !== 0) { total += extra; partsData.push({text: `Bonus ${fmtMod(extra)}`, type: 'bonus'}); }
+    const label = document.getElementById('dice-formula').value || 'Custom Roll';
+    const resultEl = document.getElementById('dice-tab-result');
+    resultEl.textContent = total;
+    resultEl.style.color = 'var(--gold)';
+    resultEl.classList.remove('dice-rolling');
+    void resultEl.offsetWidth;
+    resultEl.classList.add('dice-rolling');
+    document.getElementById('dice-tab-breakdown').innerHTML = buildBreakdownHTML(partsData, '', '', '.8rem');
+    diceState.history.unshift({total, label, partsData, tookDropped: '', isCrit: false, isFail: false});
+    if (diceState.history.length > 20) diceState.history.pop();
+    renderDiceHistory();
+    return;
+  }
+
+  // ── Skill / Save mode: single d20 with advantage ───────────────
+  const sides = diceState.selectedDie;
+  const adv = diceState.advantage;
   const roll1 = Math.floor(Math.random() * sides) + 1;
   let roll = roll1;
   let dieText, tookDropped = '';
@@ -2569,6 +2732,152 @@ loadCharList();
     <button class="cancel-btn" onclick="closeModal('modal-sanctuary')">Cancel</button>
   </div>
 </div>
+
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// HOUSE RULES
+// ══════════════════════════════════════════════════════════════════
+let houseRules = [];
+let houseRulesEditingId = null;
+const houseRulesConfirmDelete = new Set();
+
+async function loadHouseRules() {
+  try {
+    const res = await fetch('/api/house-rules');
+    houseRules = await res.json();
+    renderHouseRules();
+  } catch(e) { console.error('Failed to load house rules', e); }
+}
+
+function renderHouseRules() {
+  const el = document.getElementById('house-rules-list');
+  if (!el) return;
+  if (!houseRules.length) {
+    el.innerHTML = '<div style="color:var(--text-d);font-size:.85rem;font-style:italic;text-align:center;padding:20px 0;">No house rules yet.</div>';
+    return;
+  }
+  const byCategory = {};
+  houseRules.forEach(r => {
+    const cat = r.category || 'General';
+    if (!byCategory[cat]) byCategory[cat] = [];
+    byCategory[cat].push(r);
+  });
+  const cats = ['General','Combat','Magic','Skills','Exploration','Character Creation','Other'];
+  const sorted = Object.entries(byCategory).sort(([a],[b]) => cats.indexOf(a) - cats.indexOf(b));
+  el.innerHTML = sorted.map(([cat, rules]) => `
+    <div class="section-title">${escHtml(cat)}</div>
+    ${rules.map(r => `
+      <div class="house-rule-entry">
+        ${houseRulesEditingId === r.id ? renderRuleEditForm(r) : `
+          <div class="house-rule-title">
+            <span>${escHtml(r.title)}</span>
+            <div style="display:flex;gap:2px;align-items:center;flex-shrink:0;">
+              <button class="house-rule-edit" onclick="startEditRule('${escHtml(r.id)}')" title="Edit">✎</button>
+              ${houseRulesConfirmDelete.has(r.id) ? `
+                <button class="house-rule-confirm-del" onclick="deleteHouseRule('${escHtml(r.id)}')">Delete?</button>
+                <button class="house-rule-cancel-del" onclick="cancelDeleteRule('${escHtml(r.id)}')">Cancel</button>
+              ` : `
+                <button class="house-rule-del" onclick="startDeleteRule('${escHtml(r.id)}')" title="Delete">✕</button>
+              `}
+            </div>
+          </div>
+          <div class="house-rule-desc">${escHtml(r.description)}</div>
+        `}
+      </div>
+    `).join('')}
+  `).join('');
+}
+
+function renderRuleEditForm(r) {
+  const cats = ['General','Combat','Magic','Skills','Exploration','Character Creation','Other'];
+  return `
+    <div class="house-rule-edit-form">
+      <div class="field-group">
+        <label>Title</label>
+        <input type="text" id="edit-rule-title" value="${escHtml(r.title)}">
+      </div>
+      <div class="field-group" style="margin-top:8px;">
+        <label>Category</label>
+        <select id="edit-rule-category">
+          ${cats.map(c => `<option value="${c}"${c===r.category?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+      <textarea id="edit-rule-desc">${escHtml(r.description)}</textarea>
+      <div class="house-rule-edit-btns">
+        <button class="confirm-btn" onclick="saveEditRule('${escHtml(r.id)}')" style="margin-top:0;">Save</button>
+        <button class="cancel-btn" onclick="cancelEditRule()" style="margin-top:0;">Cancel</button>
+      </div>
+    </div>
+  `;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function startDeleteRule(id) {
+  houseRulesConfirmDelete.add(id);
+  renderHouseRules();
+}
+
+function cancelDeleteRule(id) {
+  houseRulesConfirmDelete.delete(id);
+  renderHouseRules();
+}
+
+function startEditRule(id) {
+  houseRulesEditingId = id;
+  houseRulesConfirmDelete.clear();
+  renderHouseRules();
+}
+
+function cancelEditRule() {
+  houseRulesEditingId = null;
+  renderHouseRules();
+}
+
+async function saveEditRule(id) {
+  const title = document.getElementById('edit-rule-title').value.trim();
+  const category = document.getElementById('edit-rule-category').value;
+  const description = document.getElementById('edit-rule-desc').value.trim();
+  if (!title || !description) return;
+  try {
+    await fetch('/api/house-rules/' + encodeURIComponent(id), {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({title, category, description})
+    });
+    houseRulesEditingId = null;
+    await loadHouseRules();
+  } catch(e) { console.error('Failed to update house rule', e); }
+}
+
+async function addHouseRule() {
+  const title = document.getElementById('new-rule-title').value.trim();
+  const category = document.getElementById('new-rule-category').value;
+  const description = document.getElementById('new-rule-desc').value.trim();
+  if (!title || !description) return;
+  try {
+    await fetch('/api/house-rules', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({title, category, description})
+    });
+    document.getElementById('new-rule-title').value = '';
+    document.getElementById('new-rule-desc').value = '';
+    await loadHouseRules();
+  } catch(e) { console.error('Failed to add house rule', e); }
+}
+
+async function deleteHouseRule(id) {
+  houseRulesConfirmDelete.delete(id);
+  try {
+    await fetch('/api/house-rules/' + encodeURIComponent(id), {method: 'DELETE'});
+    await loadHouseRules();
+  } catch(e) { console.error('Failed to delete house rule', e); }
+}
+</script>
 
 </body>
 </html>

@@ -1,2 +1,2 @@
 flask
-reportlab
+reportlab==3.6.13

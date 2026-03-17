@@ -8,8 +8,10 @@ Players connect via their phone browsers — no app install needed.
 1. **Install dependencies:**
 
    ```
-   pip install flask reportlab
+   pip install -r requirements.txt
    ```
+
+   > **Python version note:** This project requires **Python 3.8**. The `reportlab` dependency is pinned to `3.6.13` for compatibility — newer versions require Python 3.9+.
 
 2. **Run the server:**
 
@@ -48,9 +50,13 @@ python -m pytest
 - **Spells Tab** — Spell slot tracking (tap pips to use/recover), full spellbook with prepared toggle
 - **Gear Tab** — Inventory with quantity tracking, currency (PP/GP/EP/SP/CP)
 - **Notes Tab** — Class features/traits, free-text notes
-- **Rules Tab** — New player cheat sheet split into two sections:
-  - *Out of Combat* — All 18 skills with descriptions, ability score explanations, movement mechanics (walk, run, jump, climb, swim), and status conditions
-  - *Combat* — Action economy (Action, Bonus Action, Reaction, Free Action), common actions (Attack, Dash, Dodge, Help, Hide, Ready, Use Object), and combat status conditions
+- **Dice Tab** — Dice roller with three modes:
+  - *Normal* — Build a roll by clicking dice buttons (e.g. `+d6`, `+d4`) or type a formula directly (e.g. `2d4 + 1d6 + 4`). Supports any mix of dice types and flat bonuses.
+  - *Skill Check* — Rolls d20 with your character's skill modifier pre-applied; supports Advantage/Disadvantage
+  - *Saving Throw* — Rolls d20 with your character's save modifier pre-applied; supports Advantage/Disadvantage
+- **Rules Tab** — New player cheat sheet with two subtabs:
+  - *Reference* — All 18 skills with descriptions, ability score explanations, movement mechanics (walk, run, jump, climb, swim), action economy, common combat actions, and status conditions
+  - *Homebrew Rules* — Campaign-specific rules added by the DM. Rules persist on the server and are shared across all characters. Supports adding, editing, and deleting entries, organised by category (General, Combat, Magic, Skills, Exploration, Character Creation, Other). Data is stored in `data/house_rules.json`.
 
 ## Data
 
