@@ -26,10 +26,41 @@ OUT = Path(__file__).parent.parent / "data" / "game_data.json"
 
 HEADERS = {"User-Agent": "dnd-charsheet-app/1.0"}
 
-SRD_SOURCES = {"PHB", "PHB2024", "XPHB", "XGE", "TCE", "MPMM", "MM", "DMG", "SRD5", "basicRules"}
+SRD_SOURCES = {
+    # Core 2024
+    "PHB2024", "XPHB",
+    # Core 2014
+    "PHB", "XGE", "TCE", "MPMM", "MM", "DMG", "SRD5", "basicRules",
+    # Supplements with player options
+    "MTF",     # Mordenkainen's Tome of Foes
+    "VGM",     # Volo's Guide to Monsters
+    "SCAG",    # Sword Coast Adventurer's Guide
+    "EGW",     # Explorer's Guide to Wildemount
+    "MOT",     # Mythic Odysseys of Theros
+    "GGR",     # Guildmasters' Guide to Ravnica
+    "ERLW",    # Eberron: Rising from the Last War
+    "FTD",     # Fizban's Treasury of Dragons
+    "VRGR",    # Van Richten's Guide to Ravenloft
+    "SCC",     # Strixhaven: A Curriculum of Chaos
+    "BAM",     # Boo's Astral Menagerie (Spelljammer races)
+    "WBtW",    # The Wild Beyond the Witchlight
+    "DSotDQ",  # Dragonlance: Shadow of the Dragon Queen
+    "BMT",     # The Book of Many Things
+    "PAitM",   # Planescape: Adventures in the Multiverse
+    "AI",      # Acquisitions Incorporated
+    "GoS",     # Ghosts of Saltmarsh
+    "IDRotF",  # Icewind Dale: Rime of the Frostmaiden
+}
 
 # Higher value = preferred when deduplicating by name
-SOURCE_PRIORITY = {"XPHB": 4, "PHB2024": 4, "TCE": 3, "XGE": 3, "MPMM": 2, "PHB": 1}
+SOURCE_PRIORITY = {
+    "XPHB": 4, "PHB2024": 4,
+    "TCE": 3, "XGE": 3,
+    "MPMM": 2, "MTF": 2, "VGM": 2,
+    "PHB": 1, "SCAG": 1, "EGW": 1, "MOT": 1, "GGR": 1,
+    "ERLW": 1, "FTD": 1, "VRGR": 1, "SCC": 1, "BAM": 1,
+    "WBtW": 1, "DSotDQ": 1, "BMT": 1, "PAitM": 1,
+}
 
 
 def dedupe_by_name(items):
@@ -69,7 +100,7 @@ def clean_str(val):
 def parse_races(raw):
     races = []
     for r in raw.get("race", []):
-        if r.get("source") not in SRD_SOURCES and "2024" not in r.get("source", ""):
+        if "UA" in r.get("source", ""):
             continue
         if r.get("_copy"):
             continue  # skip variant copies
@@ -173,7 +204,7 @@ CASTER_TYPE = {
 def parse_classes(raw):
     classes = []
     for cls in raw.get("class", []):
-        if cls.get("source") not in SRD_SOURCES and "2024" not in cls.get("source", ""):
+        if "UA" in cls.get("source", ""):
             continue
 
         name = cls["name"]
@@ -244,7 +275,7 @@ def parse_classes(raw):
 def parse_backgrounds(raw):
     bgs = []
     for bg in raw.get("background", []):
-        if bg.get("source") not in SRD_SOURCES and "2024" not in bg.get("source", ""):
+        if "UA" in bg.get("source", ""):
             continue
 
         skills = []
@@ -288,7 +319,7 @@ def parse_backgrounds(raw):
 def parse_spells(raw_list):
     spells = []
     for sp in raw_list:
-        if sp.get("source") not in SRD_SOURCES and "2024" not in sp.get("source", ""):
+        if "UA" in sp.get("source", ""):
             continue
 
         # Classes that can use this spell
@@ -373,7 +404,7 @@ def main():
     try:
         raw = fetch(f"{BASE}/class/index.json")
         all_class_data = {"class": [], "subclass": []}
-        for cls_file in list(raw.values())[:20]:
+        for cls_file in raw.values():
             try:
                 cd = fetch(f"{BASE}/class/{cls_file}")
                 all_class_data["class"].extend(cd.get("class", []))
@@ -400,7 +431,7 @@ def main():
     try:
         index = fetch(f"{BASE}/spells/index.json")
         all_spells = []
-        for src, fname in list(index.items())[:10]:
+        for src, fname in index.items():
             try:
                 sd = fetch(f"{BASE}/spells/{fname}")
                 all_spells.extend(sd.get("spell", []))
