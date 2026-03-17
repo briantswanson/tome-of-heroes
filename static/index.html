@@ -2500,13 +2500,15 @@ function populateDiceSelectors() {
   const skillSel = document.getElementById('dice-skill-select');
   skillSel.innerHTML = SKILLS_DEF.map(s => {
     const p = currentChar.skills?.[s.name];
-    const star = p?.expert ? ' ★★ (Expertise)' : p?.prof ? ' ★ (Proficient)' : '';
-    return `<option value="${s.name}">${s.name} (${s.stat})${star}</option>`;
+    const star = p?.expert ? ' ★★' : p?.prof ? ' ★' : '';
+    const mod = fmtMod(getSkillMod(s.name));
+    return `<option value="${s.name}">${s.name} (${s.stat}) ${mod}${star}</option>`;
   }).join('');
   const saveSel = document.getElementById('dice-save-select');
   saveSel.innerHTML = ABILITIES.map(ab => {
     const prof = currentChar.saving_throws?.[ab];
-    return `<option value="${ab}">${ABILITY_NAMES[ab]} (${ab})${prof ? ' ★' : ''}</option>`;
+    const mod = fmtMod(getSaveMod(ab));
+    return `<option value="${ab}">${ABILITY_NAMES[ab]} (${ab}) ${mod}${prof ? ' ★' : ''}</option>`;
   }).join('');
   updateDiceModDisplay();
 }
