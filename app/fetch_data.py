@@ -28,6 +28,20 @@ HEADERS = {"User-Agent": "dnd-charsheet-app/1.0"}
 
 SRD_SOURCES = {"PHB", "PHB2024", "XPHB", "XGE", "TCE", "MPMM", "MM", "DMG", "SRD5", "basicRules"}
 
+# Higher value = preferred when deduplicating by name
+SOURCE_PRIORITY = {"XPHB": 4, "PHB2024": 4, "TCE": 3, "XGE": 3, "MPMM": 2, "PHB": 1}
+
+
+def dedupe_by_name(items):
+    """Keep one entry per name, preferring higher-priority (newer) sources."""
+    best = {}
+    for item in items:
+        name = item["name"]
+        priority = SOURCE_PRIORITY.get(item.get("source", ""), 0)
+        if name not in best or priority > SOURCE_PRIORITY.get(best[name].get("source", ""), 0):
+            best[name] = item
+    return sorted(best.values(), key=lambda x: x["name"])
+
 
 def fetch(url):
     print(f"  Fetching {url.split('/')[-1]}...")
@@ -96,7 +110,7 @@ def parse_races(raw):
             "languages": r.get("languageProficiencies", [{}])[0] if r.get("languageProficiencies") else {}
         })
 
-    return sorted(races, key=lambda x: x["name"])
+    return dedupe_by_name(races)
 
 
 # ── CLASSES ────────────────────────────────────────────────────────────────
@@ -222,7 +236,7 @@ def parse_classes(raw):
             "subclasses": sorted(subclasses),
         })
 
-    return sorted(classes, key=lambda x: x["name"])
+    return dedupe_by_name(classes)
 
 # ── BACKGROUNDS ─────────────────────────────────────────────────────────────
 
@@ -266,7 +280,7 @@ def parse_backgrounds(raw):
             "feature": feat,
         })
 
-    return sorted(bgs, key=lambda x: x["name"])
+    return dedupe_by_name(bgs)
 
 # ── SPELLS ──────────────────────────────────────────────────────────────────
 
