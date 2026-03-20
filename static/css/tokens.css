@@ -1,0 +1,15 @@
+:root {
+  --bg: #1a1208; --bg2: #221a0a; --gold: #c9a84c; --gold-b: #f0c860; --gold-d: #8a6a2a;
+  --red: #8b1a1a; --red-b: #c0392b; --green: #1a4a2a; --green-b: #27ae60;
+  --blue: #1a2a4a; --blue-b: #3498db; --text: #e8d5a0; --text-d: #9a8060;
+  --border: #3a2a10; --border-g: #5a4020; --ink: #f5e8c0; --gray: #888;
+  --purple: #4a1a6a; --purple-b: #9b59b6;
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html { font-size:19px; }
+body {
+  background:var(--bg); color:var(--text); font-family:'Crimson Text',Georgia,serif; font-size:1rem; min-height:100vh;
+  background-image:radial-gradient(ellipse at 20% 0%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(139,26,26,.08) 0%,transparent 60%);
+}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+input[type=number]{-moz-appearance:textfield;}

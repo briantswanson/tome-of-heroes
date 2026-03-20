@@ -62,6 +62,57 @@ python -m pytest
   - *Reference* — All 18 skills with descriptions, ability score explanations, movement mechanics (walk, run, jump, climb, swim), action economy, common combat actions, and status conditions
   - *Homebrew Rules* — Campaign-specific rules added by the DM. Rules persist on the server and are shared across all characters. Supports adding, editing, and deleting entries, organised by category (General, Combat, Magic, Skills, Exploration, Character Creation, Other). Data is stored in `data/house_rules.json`.
 
+## Frontend Architecture
+
+The frontend is split into feature-scoped CSS and JS files. No bundler or module system — all files share global scope and are loaded in dependency order via `<link>` and `<script src>` tags in `static/index.html`.
+
+### CSS — `static/css/`
+
+| File | Covers |
+|------|--------|
+| `tokens.css` | CSS custom properties (`:root` vars), reset, `body` |
+| `shell.css` | App chrome: screens, header, tab bar, save indicator |
+| `shared-forms.css` | `.section-title`, `.add-form`, `.add-btn` used across tabs |
+| `char-list.css` | Character list screen |
+| `creator.css` | Character creator screen |
+| `sheet-main.css` | Main tab: HP, combat stats, death saves, exhaustion, personality |
+| `sheet-stats.css` | Stats tab: ability boxes, skill list, passive perception |
+| `sheet-spells.css` | Spells tab: spell slots, spell list entries |
+| `sheet-inventory.css` | Gear tab: attacks table, item list, currency grid |
+| `sheet-features.css` | Notes tab: feature cards, notes textarea |
+| `rest.css` | Rest system buttons and layout |
+| `modals.css` | All modal overlays and hit die / full rest dialogs |
+| `dice.css` | Dice tab: die buttons, roll history, party log |
+| `sheet-rules.css` | Rules tab: subtabs, reference cards, ability grid |
+| `house-rules.css` | Homebrew rules list and edit forms |
+| `stretch-tracker.css` | Stretch tracker screen |
+
+### JS — `static/js/`
+
+Load order matters — later files depend on earlier ones.
+
+| File | Responsibilities |
+|------|-----------------|
+| `utils.js` | Constants (`ABILITIES`, `SKILLS_DEF`, etc.) and math helpers (`getMod`, `getProfBonus`, `escHtml`) |
+| `api.js` | Shared state (`currentChar`, `gameData`), `apiGet/Post/Put/Delete`, `loadGameData`, `populateSpellDatalist` |
+| `char-list.js` | `loadCharList`, `deleteChar` |
+| `creator.js` | Full character creator flow |
+| `sheet-render.js` | All `render*` functions that read `currentChar` and update the DOM |
+| `sheet-mutations.js` | All user input handlers that write to `currentChar` and call `scheduleSave` |
+| `sheet-core.js` | `loadCharacter`, `saveCharacter`, `scheduleSave`, `switchTab`, `downloadPDF` |
+| `dice.js` | Dice roller state, roll logic, history, attack/damage rolls |
+| `party-log.js` | SSE connection and party roll log rendering |
+| `rest.js` | Rest modals (short, long, good, relax, sanctuary) |
+| `stretch-tracker.js` | Stretch tracker state and all tracker functions |
+| `house-rules.js` | House rules CRUD and rendering |
+
+### Adding a new feature
+
+1. Create `static/css/<feature>.css` and `static/js/<feature>.js`
+2. Add the `<link>` in `index.html` after the most closely related existing CSS file
+3. Add the `<script src>` in `index.html` after any JS files your feature depends on
+4. Add HTML markup directly to `index.html`
+
 ## API Endpoints
 
 | Method | Path | Description |

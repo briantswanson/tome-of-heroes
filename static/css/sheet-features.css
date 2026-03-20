@@ -1,0 +1,8 @@
+/* ── NOTES ── */
+.notes-area{width:100%;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:12px;outline:none;resize:vertical;min-height:150px;line-height:1.6;}
+/* ── CLASS FEATURES ── */
+.feature-card{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:10px 12px;margin-bottom:6px;}
+.feature-card-name{font-family:'Cinzel',serif;font-size:.85rem;color:var(--ink);display:flex;justify-content:space-between;align-items:center;}
+.feature-card-level{font-size:.65rem;color:var(--gold-d);font-family:'Cinzel',serif;}
+.feature-card-desc{font-size:.82rem;color:var(--text-d);margin-top:5px;line-height:1.5;}
+.feature-del{background:none;border:none;color:var(--text-d);cursor:pointer;font-size:.9rem;padding:2px 4px;}

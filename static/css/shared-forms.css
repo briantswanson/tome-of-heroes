@@ -1,0 +1,10 @@
+/* ── SECTION TITLE ── */
+.section-title{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.25em;color:var(--gold-d);text-transform:uppercase;margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border-g);}
+/* ── ADD FORMS ── */
+.add-form{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:12px;margin-top:12px;}
+.add-form input,.add-form select,.add-form textarea{width:100%;background:var(--bg);border:1px solid var(--border-g);border-radius:3px;color:var(--ink);font-family:'Crimson Text',serif;font-size:.95rem;padding:8px 10px;outline:none;margin-bottom:8px;-webkit-appearance:none;}
+.add-form textarea{resize:vertical;min-height:60px;}
+.add-form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.add-btn{width:100%;background:linear-gradient(135deg,#2a4a2a 0%,#1a3a1a 100%);border:1px solid #3a6a3a;color:var(--gold);font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.1em;padding:10px;border-radius:3px;cursor:pointer;text-transform:uppercase;}
+.add-form-label{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-d);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;}

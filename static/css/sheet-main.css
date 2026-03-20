@@ -1,0 +1,49 @@
+/* ── CHAR HEADER ── */
+.char-header-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:12px;}
+.char-header-grid .full{grid-column:1/-1;}
+.field-group label{display:block;font-size:.6rem;letter-spacing:.15em;color:var(--gold-d);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:3px;}
+.field-group input,.field-group select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-g);color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:2px 0;outline:none;-webkit-appearance:none;}
+.field-group input:focus{border-bottom-color:var(--gold);}
+/* ── COMBAT STATS ── */
+.combat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.combat-stat{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:8px 4px;text-align:center;}
+.combat-stat label{display:block;font-size:.55rem;letter-spacing:.12em;color:var(--gold-d);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:4px;}
+.combat-stat input{width:100%;background:transparent;border:none;color:var(--ink);font-family:'Cinzel',serif;font-size:1.4rem;font-weight:600;text-align:center;outline:none;}
+/* ── HP ── */
+.hp-block{background:var(--bg2);border:1px solid #4a1010;border-radius:4px;padding:14px;margin-bottom:12px;}
+.hp-display{display:flex;align-items:center;justify-content:center;gap:4px;margin:10px 0;}
+.hp-btn{background:var(--bg);border:1px solid var(--border-g);color:var(--gold);font-size:1.4rem;font-weight:700;width:44px;height:44px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.hp-number{font-family:'Cinzel',serif;font-size:2.8rem;font-weight:900;color:var(--red-b);min-width:80px;text-align:center;line-height:1;text-shadow:0 0 20px rgba(192,57,43,.5);}
+.hp-slash{font-size:1.5rem;color:var(--text-d);}
+.hp-max-d{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--text-d);}
+.hp-sub{display:flex;gap:12px;justify-content:center;}
+.hp-sub-item{text-align:center;}
+.hp-sub-item label{display:block;font-size:.6rem;letter-spacing:.1em;color:var(--gold-d);font-family:'Cinzel',serif;text-transform:uppercase;}
+.hp-sub-input{background:transparent;border:none;border-bottom:1px solid var(--border-g);color:var(--ink);font-family:'Cinzel',serif;font-size:1.1rem;width:60px;text-align:center;outline:none;}
+/* ── DEATH SAVES ── */
+.death-saves-row{display:flex;gap:16px;align-items:center;background:var(--bg2);border:1px solid #3a1a1a;border-radius:4px;padding:10px 14px;margin-bottom:12px;}
+.death-saves-row label{font-family:'Cinzel',serif;font-size:.6rem;color:var(--gold-d);letter-spacing:.15em;text-transform:uppercase;min-width:70px;}
+.death-pips{display:flex;gap:6px;}
+.death-pip{width:22px;height:22px;border-radius:50%;cursor:pointer;border:1px solid;transition:all .15s;}
+.death-pip.success{border-color:var(--green-b);background:transparent;}
+.death-pip.success.filled{background:var(--green-b);}
+.death-pip.failure{border-color:var(--red-b);background:transparent;}
+.death-pip.failure.filled{background:var(--red-b);}
+/* ── INSPIRATION ── */
+.inspiration-btn{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:12px;}
+.inspiration-btn.active{border-color:var(--gold);background:rgba(201,168,76,.1);}
+.inspiration-gem{width:20px;height:20px;border-radius:3px;background:transparent;border:2px solid var(--gold-d);}
+.inspiration-btn.active .inspiration-gem{background:var(--gold);border-color:var(--gold-b);}
+/* ── 2014 EXHAUSTION ── */
+.exhaustion-block{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:12px;margin-bottom:12px;}
+.exhaustion-pips{display:flex;gap:8px;margin-top:8px;}
+.exhaustion-pip{flex:1;height:28px;border-radius:3px;border:1px solid var(--border-g);background:transparent;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:.6rem;color:var(--text-d);}
+.exhaustion-pip.active{background:rgba(192,57,43,.3);border-color:var(--red-b);color:var(--red-b);}
+/* ── 2014 PERSONALITY ── */
+.personality-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.personality-field label{display:block;font-size:.6rem;letter-spacing:.12em;color:var(--gold-d);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:4px;}
+.personality-field textarea{width:100%;background:var(--bg2);border:1px solid var(--border-g);border-radius:3px;color:var(--ink);font-family:'Crimson Text',serif;font-size:.9rem;padding:8px;outline:none;resize:vertical;min-height:70px;line-height:1.4;}
+.personality-field textarea:focus{border-color:var(--gold);}
+/* ── CHAR INFO FIELDS ── */
+.char-info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.char-info-grid .span2{grid-column:span 2;}

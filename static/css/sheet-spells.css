@@ -1,0 +1,21 @@
+/* ── SPELL SLOTS ── */
+.spell-slot-row{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:8px 10px;gap:10px;margin-bottom:6px;}
+.slot-level{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold);min-width:48px;}
+.slot-pips{display:flex;gap:4px;flex:1;flex-wrap:wrap;}
+.slot-pip{width:20px;height:20px;border:1px solid var(--gold-d);border-radius:50%;cursor:pointer;transition:all .15s;background:transparent;flex-shrink:0;}
+.slot-pip.used{background:var(--blue);border-color:var(--blue-b);}
+.slot-pip.available{background:rgba(201,168,76,.15);border-color:var(--gold);}
+.slot-total-input{background:transparent;border:none;border-bottom:1px solid var(--border-g);color:var(--text-d);font-size:.8rem;width:24px;text-align:center;outline:none;font-family:'Cinzel',serif;}
+/* ── SPELL ENTRIES ── */
+.spell-entry{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px;}
+.spell-prepared-toggle{width:22px;height:22px;flex-shrink:0;border:1px solid var(--gold-d);border-radius:3px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:transparent;font-size:.8rem;margin-top:1px;-webkit-appearance:none;outline:none;}
+.spell-prepared-toggle.prepared{background:rgba(201,168,76,.2);border-color:var(--gold);color:var(--gold);}
+.spell-name{font-family:'Cinzel',serif;font-size:.9rem;color:var(--ink);}
+.spell-meta{font-size:.8rem;color:var(--text-d);margin-top:2px;}
+.spell-del{background:none;border:none;color:var(--text-d);cursor:pointer;font-size:1rem;padding:2px 4px;}
+.spell-level-header{font-family:'Cinzel',serif;font-size:.6rem;color:var(--gold-d);letter-spacing:.2em;text-transform:uppercase;padding:10px 0 4px;border-bottom:1px solid var(--border-g);margin-bottom:6px;}
+/* ── SPELL STATS ── */
+.spell-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.spell-stat-box{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:8px;text-align:center;}
+.spell-stat-box label{display:block;font-family:'Cinzel',serif;font-size:.55rem;color:var(--gold-d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.spell-stat-val{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);}

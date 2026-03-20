@@ -1,0 +1,22 @@
+/* ── HOUSE RULES ── */
+.house-rule-entry{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:10px 12px;margin-bottom:6px;}
+.house-rule-title{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.house-rule-desc{font-size:.85rem;color:var(--text-d);line-height:1.5;white-space:pre-wrap;}
+.house-rule-del{background:none;border:none;color:var(--red-b);font-size:.9rem;cursor:pointer;padding:0 4px;opacity:.6;flex-shrink:0;}
+.house-rule-del:hover{opacity:1;}
+.house-rule-edit{background:none;border:none;color:var(--gold-d);font-size:.9rem;cursor:pointer;padding:0 4px;opacity:.6;flex-shrink:0;}
+.house-rule-edit:hover{opacity:1;}
+.house-rule-confirm-del{background:none;border:none;color:var(--red-b);font-size:.75rem;font-family:'Cinzel',serif;cursor:pointer;padding:2px 6px;border:1px solid var(--red-b);border-radius:3px;flex-shrink:0;}
+.house-rule-cancel-del{background:none;border:none;color:var(--text-d);font-size:.75rem;font-family:'Cinzel',serif;cursor:pointer;padding:2px 6px;border:1px solid var(--border-g);border-radius:3px;flex-shrink:0;}
+.house-rule-edit-form{padding:4px 0;}
+.house-rule-edit-form textarea{width:100%;background:transparent;border:1px solid var(--border-g);border-radius:3px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:6px 8px;outline:none;resize:vertical;min-height:80px;margin-top:6px;}
+.house-rule-edit-form textarea:focus{border-color:var(--gold);}
+.house-rule-edit-form select{background:var(--bg2);}
+.house-rule-edit-form select option{background:var(--bg2);color:var(--ink);}
+.house-rule-edit-btns{display:flex;gap:8px;margin-top:8px;}
+.add-rule-form{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:14px;margin-bottom:4px;}
+.add-rule-form .field-group{margin-bottom:10px;}
+.add-rule-form textarea{width:100%;background:transparent;border:1px solid var(--border-g);border-radius:3px;color:var(--ink);font-family:'Crimson Text',serif;font-size:1rem;padding:6px 8px;outline:none;resize:vertical;min-height:80px;}
+.add-rule-form textarea:focus{border-color:var(--gold);}
+.add-rule-form select{background:var(--bg2);}
+.add-rule-form select option{background:var(--bg2);color:var(--ink);}

@@ -1,0 +1,36 @@
+/* ── DICE ROLLER ── */
+.die-btn-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.die-btn{flex:1;min-width:36px;max-width:58px;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--text-d);font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;padding:10px 4px;cursor:pointer;text-align:center;transition:all .15s;}
+.die-btn.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold);}
+.roll-mode-row{display:flex;gap:6px;margin-bottom:12px;}
+.roll-mode-btn{flex:1;background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;color:var(--text-d);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.06em;padding:9px 4px;cursor:pointer;text-transform:uppercase;transition:all .15s;text-align:center;}
+.roll-mode-btn.active-normal{background:rgba(52,152,219,.15);border-color:var(--blue-b);color:#a8c8f8;}
+.roll-mode-btn.active-skill{background:rgba(39,174,96,.15);border-color:var(--green-b);color:#88d8a0;}
+.roll-mode-btn.active-save{background:rgba(139,26,26,.2);border-color:var(--red-b);color:#e8a0a0;}
+.dice-tab-result{font-family:'Cinzel',serif;font-size:4.5rem;font-weight:900;color:var(--gold);text-align:center;min-height:80px;line-height:1;padding:10px 0;}
+.dice-tab-breakdown{text-align:center;font-size:.85rem;color:var(--text-d);margin-top:4px;min-height:18px;}
+/* ── DICE HISTORY ── */
+.dice-roll-history{max-height:220px;overflow-y:auto;}
+.roll-hist-entry{display:flex;padding:8px 12px;border-bottom:1px solid var(--border);}
+.roll-hist-entry:last-child{border-bottom:none;}
+.roll-hist-label{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-d);}
+.roll-hist-total{font-family:'Cinzel',serif;font-weight:700;font-size:1.1rem;color:var(--gold);}
+.roll-hist-crit{color:#ffd700;}
+.roll-hist-fail{color:var(--red-b);}
+.dice-mod-badge{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-d);text-align:center;margin-top:6px;min-height:16px;}
+/* ── ROLL CHIPS ── */
+.roll-chips{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5px;}
+.roll-chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:12px;font-family:'Cinzel',serif;font-weight:600;white-space:nowrap;}
+.roll-chip-die{background:rgba(201,168,76,.12);border:1px solid var(--gold-d);color:var(--gold);}
+.roll-chip-ability{background:rgba(52,152,219,.1);border:1px solid var(--blue-b);color:#a8c8f8;}
+.roll-chip-prof{background:rgba(39,174,96,.1);border:1px solid var(--green-b);color:#88d8a0;}
+.roll-chip-exp{background:rgba(155,89,182,.12);border:1px solid var(--purple-b);color:#c8a8e8;}
+.roll-chip-bonus{background:rgba(201,168,76,.06);border:1px solid var(--border-g);color:var(--text-d);}
+.roll-chip-crit{background:rgba(255,215,0,.15);border:1px solid #ffd700;color:#ffd700;}
+.roll-chip-fumble{background:rgba(192,57,43,.15);border:1px solid var(--red-b);color:var(--red-b);}
+.roll-plus{color:var(--text-d);font-size:.75rem;line-height:1;}
+.roll-took{display:block;font-size:.72rem;color:var(--text-d);font-style:italic;text-align:center;margin-top:6px;}
+/* ── PARTY LOG ── */
+.party-log{max-height:200px;overflow-y:auto;}
+.party-log-entry{display:flex;gap:8px;padding:6px 10px;border-bottom:1px solid var(--border);font-size:.8rem;}
+.party-log-entry:last-child{border-bottom:none;}

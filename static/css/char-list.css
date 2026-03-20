@@ -1,0 +1,11 @@
+/* ── CHARACTER LIST ── */
+.char-list{padding:16px;}
+.char-card{background:var(--bg2);border:1px solid var(--border-g);border-radius:4px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
+.char-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;transition:background .15s;}
+.char-card.e2024::before{background:var(--red);}
+.char-card.e2014::before{background:var(--purple-b);}
+.char-card:active{background:#2a1f0a;}
+.char-card h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--ink);font-weight:600;}
+.char-card p{font-size:.85rem;color:var(--text-d);margin-top:2px;}
+.char-del{background:none;border:none;color:var(--red-b);font-size:1.1rem;padding:4px 8px;cursor:pointer;opacity:.6;}
+.new-char-btn{width:100%;background:linear-gradient(135deg,var(--red) 0%,#5a0f0f 100%);border:1px solid #6a1a1a;color:var(--gold);font-family:'Cinzel',serif;font-size:.9rem;font-weight:600;letter-spacing:.1em;padding:14px;border-radius:4px;cursor:pointer;margin-top:8px;text-transform:uppercase;}
